@@ -12,13 +12,25 @@ function parseJwt(token) {
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(() => {
+    // Synchronously restore user on first render to avoid flash redirect in protected routes
+    try {
+      const stored = sessionStorage.getItem('user');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
 
-  // Restore user from cookie-based JWT on mount by calling a lightweight endpoint
-  // For simplicity, we store decoded payload in state after login/register
+  // Also restore from server cookie on mount (handles Paystack redirect losing sessionStorage)
   useEffect(() => {
-    const stored = sessionStorage.getItem('user');
-    if (stored) setUser(JSON.parse(stored));
+    if (!sessionStorage.getItem('user')) {
+      api.get('/auth/me').then(res => {
+        const decoded = res.data.user;
+        setUser(decoded);
+        sessionStorage.setItem('user', JSON.stringify(decoded));
+      }).catch(() => {});
+    }
   }, []);
 
   async function register(email, displayName, password) {
@@ -37,6 +49,13 @@ export function AuthProvider({ children }) {
     return decoded;
   }
 
+  function loginWithToken(token) {
+    const decoded = parseJwt(token);
+    setUser(decoded);
+    sessionStorage.setItem('user', JSON.stringify(decoded));
+    return decoded;
+  }
+
   async function logout() {
     await api.post('/auth/logout');
     setUser(null);
@@ -44,7 +63,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, register }}>
+    <AuthContext.Provider value={{ user, login, logout, register, loginWithToken }}>
       {children}
     </AuthContext.Provider>
   );

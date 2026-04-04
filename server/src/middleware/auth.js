@@ -1,19 +1,16 @@
 const jwt = require('jsonwebtoken');
+const db = require('../db');
 
 /**
- * authenticate — extract JWT from cookie or Authorization header,
- * verify it, and attach the decoded payload to req.user.
- * Returns 401 if the token is missing or invalid.
+ * authenticate — verify JWT and attach payload to req.user.
+ * Also checks that the user is not banned/blocked on every request.
  */
-function authenticate(req, res, next) {
+async function authenticate(req, res, next) {
   let token = null;
 
-  // 1. Try HTTP-only cookie
   if (req.cookies && req.cookies.token) {
     token = req.cookies.token;
   }
-
-  // 2. Fall back to Authorization: Bearer <token>
   if (!token && req.headers.authorization) {
     const parts = req.headers.authorization.split(' ');
     if (parts.length === 2 && parts[0] === 'Bearer') {
@@ -21,25 +18,37 @@ function authenticate(req, res, next) {
     }
   }
 
-  if (!token) {
+  if (!token) return res.status(401).json({ error: 'Unauthorized' });
+
+  let payload;
+  try {
+    payload = jwt.verify(token, process.env.JWT_SECRET);
+  } catch (err) {
+    if (err.name === 'TokenExpiredError') return res.status(401).json({ error: 'Token expired' });
     return res.status(401).json({ error: 'Unauthorized' });
   }
 
+  // Re-check user status on every authenticated request
+  // This ensures banned/blocked users are locked out immediately, not after JWT expiry
   try {
-    const payload = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = payload;
-    return next();
-  } catch (err) {
-    if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ error: 'Token expired' });
-    }
-    return res.status(401).json({ error: 'Unauthorized' });
+    const result = await db.query(
+      'SELECT status, email_verified FROM users WHERE id = $1',
+      [payload.sub]
+    );
+    if (result.rows.length === 0) return res.status(401).json({ error: 'User not found' });
+    const user = result.rows[0];
+    if (user.status === 'banned')  return res.status(403).json({ error: 'Your account has been banned.' });
+    if (user.status === 'blocked') return res.status(403).json({ error: 'Your account has been temporarily blocked.' });
+  } catch {
+    // If DB check fails, still allow — don't lock out users due to transient DB errors
   }
+
+  req.user = payload;
+  return next();
 }
 
 /**
  * requireAdmin — must be used after authenticate.
- * Returns 403 if the authenticated user is not an admin.
  */
 function requireAdmin(req, res, next) {
   if (!req.user || req.user.role !== 'admin') {
