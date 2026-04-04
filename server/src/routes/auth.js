@@ -418,7 +418,6 @@ router.post('/reset-password', async (req, res, next) => {
 
 // ── GET /api/auth/profile ─────────────────────────────────────────────────────
 router.get('/profile', async (req, res, next) => {
-  // Inline auth check (no middleware to keep it simple)
   let token = req.cookies?.token;
   if (!token && req.headers.authorization?.startsWith('Bearer ')) token = req.headers.authorization.slice(7);
   if (!token) return res.status(401).json({ error: 'Unauthorized' });
@@ -427,7 +426,7 @@ router.get('/profile', async (req, res, next) => {
 
   try {
     const result = await db.query(
-      'SELECT id, email, display_name, role, created_at FROM users WHERE id = $1',
+      'SELECT id, email, display_name, role, phone, address, date_of_birth, created_at FROM users WHERE id = $1',
       [payload.sub]
     );
     if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
@@ -438,6 +437,9 @@ router.get('/profile', async (req, res, next) => {
 // ── PUT /api/auth/profile ─────────────────────────────────────────────────────
 const updateProfileSchema = z.object({
   display_name: z.string().min(1).max(100),
+  phone: z.string().max(30).optional().nullable(),
+  address: z.string().max(300).optional().nullable(),
+  date_of_birth: z.string().optional().nullable(),
 });
 
 router.put('/profile', async (req, res, next) => {
@@ -451,7 +453,11 @@ router.put('/profile', async (req, res, next) => {
     const parsed = updateProfileSchema.safeParse(req.body);
     if (!parsed.success) return res.status(400).json({ error: parsed.error.issues[0].message });
 
-    await db.query('UPDATE users SET display_name = $1 WHERE id = $2', [parsed.data.display_name, payload.sub]);
+    const { display_name, phone, address, date_of_birth } = parsed.data;
+    await db.query(
+      'UPDATE users SET display_name = $1, phone = $2, address = $3, date_of_birth = $4 WHERE id = $5',
+      [display_name, phone || null, address || null, date_of_birth || null, payload.sub]
+    );
     return res.json({ message: 'Profile updated.' });
   } catch (err) { next(err); }
 });

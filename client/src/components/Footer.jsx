@@ -54,7 +54,7 @@ export default function Footer() {
           <div>
             <p className="text-white text-xs font-semibold uppercase tracking-wider mb-4">Help</p>
             <ul className="space-y-2.5 text-xs">
-              <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+              <li><Link to="/support" className="hover:text-white transition-colors">Help Center</Link></li>
               <li><Link to="/terms-of-use" className="hover:text-white transition-colors">Terms of Use</Link></li>
               <li><Link to="/license-use" className="hover:text-white transition-colors">License Use</Link></li>
               <li><Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link></li>

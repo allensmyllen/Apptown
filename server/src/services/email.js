@@ -262,4 +262,96 @@ async function sendOtp(to, otp, purpose) {
   });
 }
 
-module.exports = { sendWelcome, sendPurchaseConfirmation, sendOtp };
+// ── 4. Support license confirmation ───────────────────────────────────────────
+async function sendSupportLicenseConfirmation(to, { licenseKey, productTitle }) {
+  const html = layout(`
+    <!-- Success banner -->
+    <div style="background:${BRAND_DARK};border-radius:10px;padding:24px;text-align:center;margin-bottom:28px;">
+      <div style="width:52px;height:52px;background:${BRAND_GREEN};border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;">🛡</div>
+      <h1 style="margin:0 0 4px;font-size:20px;font-weight:700;color:#fff;">Support License Activated!</h1>
+      <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.75);">Your support license for <strong style="color:#fff;">${productTitle}</strong> is ready.</p>
+    </div>
+
+    <p style="margin:0 0 20px;font-size:15px;color:#374151;line-height:1.6;">
+      Thank you for your purchase. Use the license key below to access support on the Help Center.
+    </p>
+
+    <!-- License key card -->
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;margin-bottom:24px;">
+      <tr>
+        <td style="padding:20px 24px;">
+          <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Product</p>
+          <p style="margin:0;font-size:16px;font-weight:700;color:#111827;">${productTitle}</p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding:0 24px 20px;">
+          <p style="margin:0 0 6px;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Support License Key</p>
+          <div style="background:#fff;border:2px solid ${BRAND_GREEN};border-radius:6px;padding:12px 16px;font-family:monospace;font-size:15px;font-weight:700;color:#111827;letter-spacing:1.5px;text-align:center;">${licenseKey}</div>
+          <p style="margin:8px 0 0;font-size:11px;color:#9ca3af;">Keep this safe — you'll need it to submit support requests.</p>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Help Center button -->
+    <p style="margin:0 0 24px;text-align:center;">
+      ${btn('Go to Help Center', `${CLIENT_URL()}/support`)}
+    </p>
+
+    ${divider}
+    <p style="margin:0;font-size:13px;color:#6b7280;text-align:center;line-height:1.6;">
+      Need help? Visit our <a href="${CLIENT_URL()}/support" style="color:${BRAND_GREEN};text-decoration:none;">Help Center</a> to get started.
+    </p>
+  `);
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM,
+    to,
+    subject: `Your Support License for ${productTitle} — devmarket`,
+    html,
+  });
+}
+
+// ── 5. Support message notification ──────────────────────────────────────────
+async function sendSupportMessageNotification(to, { productTitle, ticketId, messageBody, senderRole }) {
+  const isAdminReply = senderRole === 'admin';
+  const subject = isAdminReply
+    ? `New reply on your support ticket — ${productTitle}`
+    : `New support message — ${productTitle}`;
+
+  const html = layout(`
+    <h1 style="margin:0 0 8px;font-size:20px;font-weight:700;color:#111827;">
+      ${isAdminReply ? 'You have a new reply' : 'New support message'}
+    </h1>
+    <p style="margin:0 0 20px;font-size:15px;color:#6b7280;line-height:1.6;">
+      ${isAdminReply
+        ? `The support team has replied to your ticket for <strong>${productTitle}</strong>.`
+        : `A user has sent a message on their support ticket for <strong>${productTitle}</strong>.`
+      }
+    </p>
+
+    ${messageBody ? `
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+      <p style="margin:0 0 4px;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;letter-spacing:0.05em;">Message</p>
+      <p style="margin:0;font-size:14px;color:#374151;line-height:1.6;">${messageBody}</p>
+    </div>` : ''}
+
+    <p style="margin:0 0 24px;text-align:center;">
+      ${btn('View Ticket', `${CLIENT_URL()}/support`)}
+    </p>
+
+    ${divider}
+    <p style="margin:0;font-size:12px;color:#9ca3af;text-align:center;">
+      Ticket ID: <span style="font-family:monospace;">${ticketId.slice(0, 8)}</span>
+    </p>
+  `);
+
+  await transporter.sendMail({
+    from: process.env.SMTP_FROM,
+    to,
+    subject,
+    html,
+  });
+}
+
+module.exports = { sendWelcome, sendPurchaseConfirmation, sendOtp, sendSupportLicenseConfirmation, sendSupportMessageNotification };

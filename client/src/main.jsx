@@ -25,12 +25,14 @@ import Products from './pages/admin/Products';
 import Orders from './pages/admin/Orders';
 import Categories from './pages/admin/Categories';
 import Users from './pages/admin/Users';
+import AdminSupport from './pages/admin/AdminSupport';
 import Cart from './pages/Cart';
 import TermsOfUse from './pages/TermsOfUse';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ReturnPolicy from './pages/ReturnPolicy';
 import LicenseUse from './pages/LicenseUse';
 import Profile from './pages/Profile';
+import Support from './pages/Support';
 
 function PublicLayout({ children }) {
   return (
@@ -49,8 +51,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <AuthModalProvider>
           <CartProvider>
-              <PageTracker />
-              <Routes>
+            <PageTracker />
+            <Routes>
               {/* Public routes — with Navbar + Footer */}
               <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
               <Route path="/products/:id" element={<PublicLayout><ProductDetail /></PublicLayout>} />
@@ -60,11 +62,13 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/checkout" element={<PublicLayout><Checkout /></PublicLayout>} />
               <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
               <Route path="/downloads" element={<PublicLayout><ProtectedRoute><MyDownloads /></ProtectedRoute></PublicLayout>} />
+              <Route path="/my-downloads" element={<Navigate to="/downloads" replace />} />
               <Route path="/profile" element={<PublicLayout><ProtectedRoute><Profile /></ProtectedRoute></PublicLayout>} />
               <Route path="/terms-of-use" element={<PublicLayout><TermsOfUse /></PublicLayout>} />
               <Route path="/privacy-policy" element={<PublicLayout><PrivacyPolicy /></PublicLayout>} />
               <Route path="/return-policy" element={<PublicLayout><ReturnPolicy /></PublicLayout>} />
               <Route path="/license-use" element={<PublicLayout><LicenseUse /></PublicLayout>} />
+              <Route path="/support" element={<PublicLayout><ProtectedRoute><Support /></ProtectedRoute></PublicLayout>} />
 
               {/* Admin routes — no Navbar or Footer */}
               <Route path="/admin" element={<AdminRoute><Dashboard /></AdminRoute>} />
@@ -72,6 +76,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/admin/orders" element={<AdminRoute><Orders /></AdminRoute>} />
               <Route path="/admin/categories" element={<AdminRoute><Categories /></AdminRoute>} />
               <Route path="/admin/users" element={<AdminRoute><Users /></AdminRoute>} />
+              <Route path="/admin/support" element={<AdminRoute><AdminSupport /></AdminRoute>} />
             </Routes>
           </CartProvider>
         </AuthModalProvider>

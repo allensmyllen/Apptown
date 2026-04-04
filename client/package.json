@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "jest --runInBand",
+    "test:run": "jest --runInBand --forceExit"
   },
   "dependencies": {
     "@stripe/stripe-js": "^3.4.1",
@@ -16,7 +18,27 @@
     "recharts": "^3.8.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.29.2",
+    "@babel/preset-react": "^7.28.5",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@vitejs/plugin-react": "^4.3.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest-environment-jsdom": "^30.3.0",
     "vite": "^5.2.11"
+  },
+  "jest": {
+    "testEnvironment": "jest-environment-jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
+    "moduleNameMapper": {
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    },
+    "testMatch": [
+      "**/tests/**/*.test.jsx",
+      "**/tests/**/*.test.js"
+    ],
+    "transform": {
+      "^.+\\.[jt]sx?$": "babel-jest"
+    }
   }
 }

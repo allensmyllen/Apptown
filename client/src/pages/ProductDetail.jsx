@@ -67,7 +67,10 @@ export default function ProductDetail() {
   useEffect(() => {
     if (!user) return;
     api.get('/orders').then(res => {
-      const owned = (res.data.orders || []).some(o => o.product_id === id);
+      // product_id from API may be a number; id from useParams is a string
+      const owned = (res.data.orders || []).some(
+        o => String(o.product_id) === String(id)
+      );
       setHasPurchased(owned);
     }).catch(() => {});
   }, [user, id]);
@@ -80,6 +83,17 @@ export default function ProductDetail() {
       window.location.href = res.data.url;
     } catch (err) {
       setError(err.response?.data?.error || 'Purchase failed. Please try again.');
+      setBuying(false);
+    }
+  }
+
+  async function handleBuySupportLicense() {
+    setBuying(true);
+    try {
+      const res = await api.post('/support-licenses/purchase', { productId: product.id });
+      window.location.href = res.data.url;
+    } catch (err) {
+      setError(err.response?.data?.error || 'Support license purchase failed. Please try again.');
       setBuying(false);
     }
   }
@@ -269,12 +283,49 @@ export default function ProductDetail() {
             <p className="text-3xl font-bold text-gray-900 mt-4">₦{(product.price_cents / 100).toLocaleString('en-NG')}</p>
             <p className="text-xs text-gray-400 mt-0.5">One-time purchase · Instant download</p>
 
+            {product.support_price_cents && (
+              <div className="mt-3 flex items-center gap-2 bg-indigo-50 border border-indigo-100 rounded-lg px-3 py-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-indigo-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <div>
+                  <p className="text-xs font-semibold text-indigo-700">Support License available</p>
+                  <p className="text-xs text-indigo-500">₦{(product.support_price_cents / 100).toLocaleString('en-NG')} · 3 support requests</p>
+                </div>
+              </div>
+            )}
+
             {error && (
               <p role="alert" className="mt-4 text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>
             )}
 
             <div className="mt-5 space-y-2">
-              {user ? (
+              {!user ? (
+                <button onClick={() => openModal('login')}
+                  className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold text-sm transition-colors">
+                  Sign in to Purchase
+                </button>
+              ) : hasPurchased ? (
+                <>
+                  <button disabled
+                    className="w-full bg-gray-100 text-gray-400 py-3 rounded-xl font-semibold text-sm cursor-not-allowed flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Already Purchased
+                  </button>
+                  <Link to="/downloads"
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm transition-colors border border-green-400 text-green-600 bg-green-50 hover:bg-green-100 flex items-center justify-center gap-2">
+                    Go to My Downloads
+                  </Link>
+                  {product.support_price_cents && (
+                    <button onClick={handleBuySupportLicense}
+                      className="w-full bg-indigo-500 hover:bg-indigo-600 text-white py-3 rounded-xl font-semibold text-sm transition-colors">
+                      Buy Support License — ₦{(product.support_price_cents / 100).toLocaleString('en-NG')}
+                    </button>
+                  )}
+                </>
+              ) : (
                 <>
                   <button onClick={handleBuy} disabled={buying}
                     className="w-full bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
@@ -288,11 +339,6 @@ export default function ProductDetail() {
                     {inCart ? 'Added to Cart' : 'Add to Cart'}
                   </button>
                 </>
-              ) : (
-                <button onClick={() => openModal('login')}
-                  className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold text-sm transition-colors">
-                  Sign in to Purchase
-                </button>
               )}
             </div>
 

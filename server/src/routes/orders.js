@@ -130,6 +130,16 @@ router.post('/cart', authenticate, async (req, res, next) => {
     }
 
     const products = productsResult.rows;
+
+    // Block duplicate cart purchase
+    const ownedCheck = await db.query(
+      `SELECT product_id FROM orders WHERE user_id = $1 AND product_id = ANY($2::uuid[]) AND status = 'completed' LIMIT 1`,
+      [req.user.sub, uniqueIds]
+    );
+    if (ownedCheck.rows.length > 0) {
+      return res.status(409).json({ error: 'You already own one or more products in this cart.' });
+    }
+
     const totalCents = products.reduce((sum, p) => sum + p.price_cents, 0);
 
     const userResult = await db.query('SELECT email FROM users WHERE id = $1', [req.user.sub]);

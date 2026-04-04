@@ -16,6 +16,11 @@ process.env.JWT_SECRET = 'test-secret-product';
 
 const app = require('../../src/app');
 
+beforeEach(() => {
+  db.query.mockReset();
+  storage.uploadFile.mockReset();
+});
+
 function adminToken() {
   return jwt.sign(
     { sub: 'admin-1', email: 'admin@example.com', role: 'admin', iat: Math.floor(Date.now() / 1000), exp: Math.floor(Date.now() / 1000) + 86400 },
@@ -62,7 +67,9 @@ describe('Req 6.2 — preview_link stored and returned', () => {
     };
 
     storage.uploadFile.mockResolvedValue('products/test.zip');
-    db.query.mockResolvedValueOnce({ rows: [product] });
+    db.query
+      .mockResolvedValueOnce({ rows: [{ status: 'active', email_verified: true }] }) // authenticate middleware
+      .mockResolvedValueOnce({ rows: [product] }); // INSERT product
 
     const res = await request(app)
       .post('/api/products')

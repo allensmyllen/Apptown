@@ -7,15 +7,15 @@ const request = require('supertest');
 const jwt = require('jsonwebtoken');
 
 jest.mock('../../src/db');
-jest.mock('stripe');
+jest.mock('axios');
 jest.mock('../../src/services/email');
 
 const db = require('../../src/db');
+const axios = require('axios');
 const emailService = require('../../src/services/email');
 
 process.env.JWT_SECRET = 'test-secret-order';
-process.env.STRIPE_SECRET_KEY = 'sk_test_fake';
-process.env.STRIPE_WEBHOOK_SECRET = 'whsec_fake';
+process.env.PAYSTACK_SECRET_KEY = 'sk_test_fake_paystack';
 process.env.CLIENT_URL = 'http://localhost:5173';
 
 const app = require('../../src/app');
@@ -28,38 +28,39 @@ function userToken(id = 'user-1') {
   );
 }
 
-const mockStripe = {
-  checkout: {
-    sessions: {
-      create: jest.fn(),
-    },
-  },
-  webhooks: {
-    constructEvent: jest.fn(),
-  },
-};
+beforeEach(() => {
+  db.query.mockReset();
+  axios.mockReset();
+  emailService.sendPurchaseConfirmation.mockReset();
+});
 
-jest.mock('stripe', () => jest.fn(() => mockStripe));
+// ── Req 4.1 — Paystack checkout session created on order initiation ───────────
 
-// ── Req 4.1 — Stripe checkout session created on order initiation ─────────────
-
-describe('Req 4.1 — Stripe checkout session created', () => {
-  test('POST /api/orders creates a Stripe checkout session and returns URL', async () => {
+describe('Req 4.1 — Paystack checkout session created', () => {
+  test('POST /api/orders creates a Paystack transaction and returns URL', async () => {
     const product = {
       id: 'prod-1',
       title: 'Test Product',
       price_cents: 1999,
       published: true,
     };
-    const sessionUrl = 'https://checkout.stripe.com/test-session';
+    const authorizationUrl = 'https://checkout.paystack.com/test-session';
 
     db.query
+      .mockResolvedValueOnce({ rows: [{ status: 'active', email_verified: true }] }) // authenticate middleware
       .mockResolvedValueOnce({ rows: [product] }) // product lookup
-      .mockResolvedValueOnce({ rows: [{ id: 'order-1', status: 'pending' }] }); // insert order
+      .mockResolvedValueOnce({ rows: [] }) // already owned check
+      .mockResolvedValueOnce({ rows: [{ email: 'user@example.com' }] }) // user email lookup
+      .mockResolvedValueOnce({ rows: [{ id: 'order-1', status: 'pending' }] }) // insert order
+      .mockResolvedValueOnce({ rows: [] }); // update stripe_session_id
 
-    mockStripe.checkout.sessions.create.mockResolvedValue({
-      id: 'cs_test_123',
-      url: sessionUrl,
+    axios.mockResolvedValue({
+      data: {
+        data: {
+          authorization_url: authorizationUrl,
+          reference: 'order-1',
+        },
+      },
     });
 
     const res = await request(app)
@@ -68,28 +69,34 @@ describe('Req 4.1 — Stripe checkout session created', () => {
       .send({ productId: 'prod-1' });
 
     expect(res.status).toBe(201);
-    expect(res.body.url).toBe(sessionUrl);
-    expect(mockStripe.checkout.sessions.create).toHaveBeenCalled();
+    expect(res.body.url).toBe(authorizationUrl);
+    expect(axios).toHaveBeenCalled();
   });
 });
 
 // ── Req 4.3 — Payment failure sets order status to failed ────────────────────
 
 describe('Req 4.3 — Payment failure handling', () => {
-  test('webhook payment_intent.payment_failed sets order status to failed', async () => {
+  test('webhook charge.failed sets order status to failed', async () => {
     const failEvent = {
-      type: 'payment_intent.payment_failed',
-      data: { object: { id: 'pi_failed_123' } },
+      event: 'charge.failed',
+      data: { reference: 'order-ref-123' },
     };
 
-    mockStripe.webhooks.constructEvent.mockReturnValue(failEvent);
-    db.query.mockResolvedValueOnce({ rows: [] }); // update order
+    const secret = process.env.PAYSTACK_SECRET_KEY;
+    const crypto = require('crypto');
+    const hash = crypto
+      .createHmac('sha512', secret)
+      .update(JSON.stringify(failEvent))
+      .digest('hex');
+
+    db.query.mockResolvedValueOnce({ rows: [] }); // update order to failed
 
     const res = await request(app)
       .post('/api/orders/webhook')
-      .set('stripe-signature', 'test-sig')
+      .set('x-paystack-signature', hash)
       .set('content-type', 'application/json')
-      .send(Buffer.from(JSON.stringify(failEvent)));
+      .send(failEvent);
 
     expect(res.status).toBe(200);
     expect(db.query).toHaveBeenCalledWith(
@@ -102,30 +109,36 @@ describe('Req 4.3 — Payment failure handling', () => {
 // ── Req 4.5 — Confirmation email sent on order completion ────────────────────
 
 describe('Req 4.5 — Confirmation email on order completion', () => {
-  test('webhook checkout.session.completed sends confirmation email', async () => {
+  test('webhook charge.success sends confirmation email', async () => {
     const completedEvent = {
-      type: 'checkout.session.completed',
+      event: 'charge.success',
       data: {
-        object: {
-          id: 'cs_test_456',
-          payment_intent: 'pi_456',
-        },
+        reference: 'order-ref-456',
+        id: 'txn_456',
       },
     };
 
-    mockStripe.webhooks.constructEvent.mockReturnValue(completedEvent);
+    const secret = process.env.PAYSTACK_SECRET_KEY;
+    const crypto = require('crypto');
+    const hash = crypto
+      .createHmac('sha512', secret)
+      .update(JSON.stringify(completedEvent))
+      .digest('hex');
+
     emailService.sendPurchaseConfirmation.mockResolvedValue(true);
 
     db.query
-      .mockResolvedValueOnce({ rows: [{ id: 'order-2', user_id: 'user-1', product_id: 'prod-1' }] }) // update order
+      .mockResolvedValueOnce({ rows: [{ id: 'order-2', user_id: 'user-1', product_id: 'prod-1', amount_cents: 1999 }] }) // update order to completed
       .mockResolvedValueOnce({ rows: [{ email: 'buyer@example.com' }] }) // user lookup
-      .mockResolvedValueOnce({ rows: [{ title: 'Test Product' }] }); // product lookup
+      .mockResolvedValueOnce({ rows: [{ title: 'Test Product' }] }) // product lookup
+      .mockResolvedValueOnce({ rows: [] }) // check existing license
+      .mockResolvedValueOnce({ rows: [] }); // insert license
 
     const res = await request(app)
       .post('/api/orders/webhook')
-      .set('stripe-signature', 'test-sig')
+      .set('x-paystack-signature', hash)
       .set('content-type', 'application/json')
-      .send(Buffer.from(JSON.stringify(completedEvent)));
+      .send(completedEvent);
 
     expect(res.status).toBe(200);
     expect(emailService.sendPurchaseConfirmation).toHaveBeenCalledWith(

@@ -8,8 +8,8 @@ const { uploadFile } = require('../services/storage');
 
 const router = express.Router();
 
-const MAX_FILE_SIZE = 500 * 1024 * 1024; // 500 MB
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;  // 5 MB
+const MAX_FILE_SIZE = 500 * 1024 * 1024;
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const ALLOWED_IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/webp'];
 const MIME_TO_EXT = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' };
 
@@ -79,7 +79,7 @@ router.get('/', async (req, res, next) => {
     const limit = 20;
     const offset = (parseInt(page, 10) - 1) * limit;
 
-    let conditions = ['p.published = true'];
+    const conditions = ['p.published = true'];
     const params = [];
 
     if (category) {
@@ -92,38 +92,40 @@ router.get('/', async (req, res, next) => {
     }
 
     const where = conditions.join(' AND ');
-    const sql = `
-      SELECT p.*,
-        COUNT(DISTINCT o.id) FILTER (WHERE o.status = 'completed') AS sales_count,
-        ROUND(AVG(r.rating)::numeric, 1) AS avg_rating,
-        COUNT(DISTINCT r.id) AS review_count
-      FROM products p
-      LEFT JOIN orders o ON o.product_id = p.id
-      LEFT JOIN reviews r ON r.product_id = p.id
-      WHERE ${where}
-      GROUP BY p.id
-      ORDER BY p.created_at DESC
-      LIMIT ${limit} OFFSET ${offset}
-    `;
 
-    const result = await db.query(sql, params);
-    return res.json({ products: result.rows, page: parseInt(page, 10) });
-  } catch (err) {
-    next(err);
-  }
-});
-
-    if (category) {
-      params.push(category);
-      sql += ' AND category = $' + params.length;
+    let result;
+    try {
+      result = await db.query(`
+        SELECT p.*,
+          COUNT(DISTINCT o.id) FILTER (WHERE o.status = 'completed') AS sales_count,
+          ROUND(AVG(r.rating)::numeric, 1) AS avg_rating,
+          COUNT(DISTINCT r.id) AS review_count
+        FROM products p
+        LEFT JOIN orders o ON o.product_id = p.id
+        LEFT JOIN reviews r ON r.product_id = p.id
+        WHERE ${where}
+        GROUP BY p.id
+        ORDER BY p.created_at DESC
+        LIMIT ${limit} OFFSET ${offset}
+      `, params);
+    } catch (joinErr) {
+      if (joinErr.code === '42P01') {
+        result = await db.query(`
+          SELECT p.*,
+            COUNT(DISTINCT o.id) FILTER (WHERE o.status = 'completed') AS sales_count,
+            NULL AS avg_rating, 0 AS review_count
+          FROM products p
+          LEFT JOIN orders o ON o.product_id = p.id
+          WHERE ${where}
+          GROUP BY p.id
+          ORDER BY p.created_at DESC
+          LIMIT ${limit} OFFSET ${offset}
+        `, params);
+      } else {
+        throw joinErr;
+      }
     }
-    if (search) {
-      params.push('%' + search + '%');
-      sql += ' AND (title ILIKE $' + params.length + ' OR description ILIKE $' + params.length + ')';
-    }
-    sql += ' ORDER BY created_at DESC LIMIT ' + limit + ' OFFSET ' + offset;
 
-    const result = await db.query(sql, params);
     return res.json({ products: result.rows, page: parseInt(page, 10) });
   } catch (err) {
     next(err);
@@ -133,18 +135,34 @@ router.get('/', async (req, res, next) => {
 // GET /api/products/:id
 router.get('/:id', async (req, res, next) => {
   try {
-    const result = await db.query(
-      `SELECT p.*,
-        COUNT(DISTINCT o.id) FILTER (WHERE o.status = 'completed') AS sales_count,
-        ROUND(AVG(r.rating)::numeric, 1) AS avg_rating,
-        COUNT(DISTINCT r.id) AS review_count
-       FROM products p
-       LEFT JOIN orders o ON o.product_id = p.id
-       LEFT JOIN reviews r ON r.product_id = p.id
-       WHERE p.id = $1 AND p.published = true
-       GROUP BY p.id`,
-      [req.params.id]
-    );
+    let result;
+    try {
+      result = await db.query(`
+        SELECT p.*,
+          COUNT(DISTINCT o.id) FILTER (WHERE o.status = 'completed') AS sales_count,
+          ROUND(AVG(r.rating)::numeric, 1) AS avg_rating,
+          COUNT(DISTINCT r.id) AS review_count
+        FROM products p
+        LEFT JOIN orders o ON o.product_id = p.id
+        LEFT JOIN reviews r ON r.product_id = p.id
+        WHERE p.id = $1 AND p.published = true
+        GROUP BY p.id
+      `, [req.params.id]);
+    } catch (joinErr) {
+      if (joinErr.code === '42P01') {
+        result = await db.query(`
+          SELECT p.*,
+            COUNT(DISTINCT o.id) FILTER (WHERE o.status = 'completed') AS sales_count,
+            NULL AS avg_rating, 0 AS review_count
+          FROM products p
+          LEFT JOIN orders o ON o.product_id = p.id
+          WHERE p.id = $1 AND p.published = true
+          GROUP BY p.id
+        `, [req.params.id]);
+      } else {
+        throw joinErr;
+      }
+    }
     if (result.rows.length === 0) return res.status(404).json({ error: 'Product not found' });
     return res.json(result.rows[0]);
   } catch (err) {
@@ -165,6 +183,7 @@ router.post('/', authenticate, requireAdmin, handleUpload, async (req, res, next
     if (!parsed.success) return res.status(400).json({ error: parsed.error.issues[0].message });
 
     const { title, description, price_cents, category, preview_link } = parsed.data;
+    const support_price_cents = req.body.support_price_cents ? parseInt(req.body.support_price_cents, 10) : null;
     const fileKey = 'products/' + uuidv4() + '-' + productFile.originalname;
     await uploadFile(productFile.buffer, fileKey, productFile.mimetype);
 
@@ -180,8 +199,8 @@ router.post('/', authenticate, requireAdmin, handleUpload, async (req, res, next
     }
 
     const result = await db.query(
-      'INSERT INTO products (title, description, price_cents, category, preview_link, file_key, file_format, image_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *',
-      [title, description, price_cents, category, preview_link || null, fileKey, format, imageUrl]
+      'INSERT INTO products (title, description, price_cents, category, preview_link, file_key, file_format, image_url, support_price_cents) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
+      [title, description, price_cents, category, preview_link || null, fileKey, format, imageUrl, support_price_cents]
     );
     return res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -196,6 +215,12 @@ router.put('/:id', authenticate, requireAdmin, handleUpload, async (req, res, ne
     if (!parsed.success) return res.status(400).json({ error: parsed.error.issues[0].message });
 
     const fields = { ...parsed.data };
+
+    // Handle support_price_cents separately (not in productSchema)
+    if (req.body.support_price_cents !== undefined) {
+      const spc = req.body.support_price_cents;
+      fields.support_price_cents = (spc === '' || spc === null || spc === 'null') ? null : parseInt(spc, 10);
+    }
 
     const imageFile = req.files && req.files.image && req.files.image[0];
     if (imageFile) {

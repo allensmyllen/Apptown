@@ -46,6 +46,8 @@ app.use('/api/admin', require('./routes/admin'));
 app.use('/api/admin/users', require('./routes/adminUsers'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/licenses', require('./routes/licenses'));
+app.use('/api/support-licenses', require('./routes/support-licenses'));
+app.use('/api/support-tickets', require('./routes/support-tickets'));
 app.use('/api/products/:productId/reviews', require('./routes/reviews'));
 
 // Global error handler
