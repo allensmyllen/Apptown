@@ -183,9 +183,9 @@ router.post('/:id/messages', authenticate, handleUpload, async (req, res, next) 
     );
     const fullMessage = fullMsg.rows[0];
 
-    // Emit real-time event to all clients in this ticket's room
+    // Emit real-time event to ALL clients in this ticket's room (including sender)
     const io = req.app.get('io');
-    if (io) io.to(`ticket:${id}`).emit('new_message', fullMessage);
+    if (io) io.in(`ticket:${id}`).emit('new_message', fullMessage);
 
     return res.status(201).json({ message: fullMessage });
   } catch (err) {

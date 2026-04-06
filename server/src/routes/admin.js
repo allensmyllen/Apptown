@@ -302,9 +302,9 @@ router.post('/support-tickets/:id/messages', handleUpload, async (req, res, next
       console.error('[admin-support] email error:', emailErr.message);
     }
 
-    // Emit real-time event to all clients in this ticket's room
+    // Emit real-time event to ALL clients in this ticket's room (including sender)
     const io = req.app.get('io');
-    if (io) io.to(`ticket:${id}`).emit('new_message', fullMsg.rows[0]);
+    if (io) io.in(`ticket:${id}`).emit('new_message', fullMsg.rows[0]);
 
     return res.status(201).json({ message: fullMsg.rows[0] });
   } catch (err) {

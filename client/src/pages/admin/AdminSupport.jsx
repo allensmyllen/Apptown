@@ -74,10 +74,10 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
       const formData = new FormData();
       formData.append('body', msgInput.trim());
       if (attachFile) formData.append('file', attachFile);
-      const res = await api.post(`/admin/support-tickets/${ticket.id}/messages`, formData, {
+      await api.post(`/admin/support-tickets/${ticket.id}/messages`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setMessages(prev => prev.some(m => m.id === res.data.message.id) ? prev : [...prev, res.data.message]);
+      // Don't add to state here — socket will broadcast new_message to all room members including sender
       setMsgInput('');
       setAttachFile(null);
     } catch { /* silently fail */ }

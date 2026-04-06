@@ -104,8 +104,8 @@ export default function HelpCenterTab() {
     if (!replyBody.trim()) { setReplyError('Message is required'); return; }
     setSendingReply(true);
     try {
-      const res = await api.post(`/support-tickets/${selectedTicket.id}/messages`, { body: replyBody.trim() });
-      setMessages(prev => prev.some(m => m.id === res.data.message.id) ? prev : [...prev, res.data.message]);
+      await api.post(`/support-tickets/${selectedTicket.id}/messages`, { body: replyBody.trim() });
+      // Don't add to state here — socket broadcasts new_message to all room members including sender
       setReplyBody('');
     } catch (err) { setReplyError(err.response?.data?.error || 'Failed to send message.'); }
     finally { setSendingReply(false); }
