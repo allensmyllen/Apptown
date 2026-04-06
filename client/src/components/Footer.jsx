@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import Logo from './Logo';
 
 export default function Footer() {
   const [categories, setCategories] = useState([]);
@@ -18,8 +19,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <span style={{ backgroundColor: '#3781EE' }} className="text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
-              <span className="text-white font-bold text-base">App Town</span>
+              <Logo size={28} />
             </Link>
             <p className="text-xs text-gray-500 leading-relaxed">
               The marketplace for premium digital assets built by world-class developers.

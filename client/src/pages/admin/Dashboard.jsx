@@ -147,8 +147,8 @@ export default function Dashboard() {
             <AreaChart data={series} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
               <defs>
                 <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#22c55e" stopOpacity={0.2} />
-                  <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#3781EE" stopOpacity={0.2} />
+                  <stop offset="95%" stopColor="#3781EE" stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
@@ -157,7 +157,7 @@ export default function Dashboard() {
                 tickFormatter={(v) => v === 0 ? '0' : `₦${(v / 100 / 1000).toFixed(0)}k`} />
               <Tooltip content={<ChartTooltip prefix="₦" />}
                 formatter={(v) => [`₦${(v / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}`, 'Revenue']} />
-              <Area type="monotone" dataKey="revenue" stroke="#22c55e" strokeWidth={2} fill="url(#revenueGrad)" dot={false} activeDot={{ r: 4 }} />
+              <Area type="monotone" dataKey="revenue" stroke="#3781EE" strokeWidth={2} fill="url(#revenueGrad)" dot={false} activeDot={{ r: 4 }} />
             </AreaChart>
           </ResponsiveContainer>
         </div>

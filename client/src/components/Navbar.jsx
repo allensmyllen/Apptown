@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useAuthModal } from '../hooks/useAuthModal';
 import { useCart } from '../hooks/useCart';
 import api from '../services/api';
+import Logo from './Logo';
 
 const PRIMARY = '#3781EE';
 const NAV_BG  = '#0D0D1A';
@@ -52,9 +53,8 @@ export default function Navbar() {
         {/* Main bar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 text-lg font-bold tracking-tight shrink-0">
-            <span style={{ backgroundColor: PRIMARY }} className="text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
-            <span className="text-white">App Town</span>
+          <Link to="/" className="flex items-center shrink-0">
+            <Logo size={30} />
           </Link>
 
           {/* Desktop right side */}
@@ -165,9 +165,8 @@ export default function Navbar() {
       {/* Sidebar panel */}
       <div style={{ backgroundColor: NAV_BG }} className={`fixed top-0 right-0 h-full w-72 z-50 sm:hidden flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
-          <Link to="/" onClick={closeSidebar} className="flex items-center gap-2">
-            <span style={{ backgroundColor: PRIMARY }} className="text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
-            <span className="text-white font-bold text-sm">App Town</span>
+          <Link to="/" onClick={closeSidebar} className="flex items-center">
+            <Logo size={28} />
           </Link>
           <button onClick={closeSidebar} className="text-gray-400 hover:text-white p-1 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
