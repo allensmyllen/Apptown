@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
 import DownloadButton from '../components/DownloadButton';
+import HelpCenterTab from './HelpCenterTab';
 
 const PRIMARY = '#3781EE';
 
@@ -36,6 +37,7 @@ const TABS = [
   { key: 'support',   label: 'Support Licenses' },
   { key: 'profile',   label: 'Profile Settings' },
   { key: 'password',  label: 'Change Password' },
+  { key: 'helpcenter', label: 'Help Center' },
 ];
 
 export default function UserDashboard() {
@@ -130,7 +132,7 @@ export default function UserDashboard() {
     : null;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
+    <div style={{ backgroundColor: '#ffffff' }}>
 
       {/* ── Full-width profile banner ──────────────────────────────────── */}
       <div style={{ backgroundColor: '#EBF2FD' }}>
@@ -377,6 +379,9 @@ export default function UserDashboard() {
             </div>
           </div>
         )}
+
+        {/* HELP CENTER */}
+        {tab === 'helpcenter' && <HelpCenterTab />}
 
       </div>
     </div>

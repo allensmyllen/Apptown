@@ -89,7 +89,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/privacy-policy" element={<PublicLayout><PrivacyPolicy /></PublicLayout>} />
               <Route path="/return-policy" element={<PublicLayout><ReturnPolicy /></PublicLayout>} />
               <Route path="/license-use" element={<PublicLayout><LicenseUse /></PublicLayout>} />
-              <Route path="/support" element={<PublicLayout><ProtectedRoute><Support /></ProtectedRoute></PublicLayout>} />
+              <Route path="/support" element={<DashboardLayout><ProtectedRoute><UserDashboard /></ProtectedRoute></DashboardLayout>} />
 
               {/* Admin routes — no Navbar or Footer */}
               <Route path="/admin" element={<AdminRoute><Dashboard /></AdminRoute>} />
