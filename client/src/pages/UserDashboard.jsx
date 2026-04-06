@@ -127,11 +127,11 @@ export default function UserDashboard() {
     : null;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f3f4f6' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#f8f9fa' }}>
 
       {/* ── Full-width profile banner ──────────────────────────────────── */}
       <div style={{ backgroundColor: '#0D0D1A' }}>
-        <div className="px-6 sm:px-10">
+        <div className="max-w-5xl mx-auto px-6 sm:px-8">
 
           {/* Avatar + name row */}
           <div className="flex items-center gap-5 pt-8 pb-5">
@@ -183,7 +183,7 @@ export default function UserDashboard() {
       </div>
 
       {/* ── Tab content ───────────────────────────────────────────────── */}
-      <div className="px-6 sm:px-10 py-8">
+      <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
 
         {/* DOWNLOADS */}
         {tab === 'downloads' && (
