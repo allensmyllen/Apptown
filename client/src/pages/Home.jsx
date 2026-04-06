@@ -78,12 +78,12 @@ export default function Home() {
         {/* Dark overlay */}
         <div className="absolute inset-0" style={{ backgroundColor: 'rgba(13,13,26,0.82)' }} />
         <div className="relative max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 text-white">
             Premium Digital Assets<br />
             <span style={{ color: '#3781EE' }}>for Every Project</span>
           </h1>
-          <p className="text-gray-300 text-base sm:text-lg mb-8">
-            Discover thousands of themes, plugins, scripts and source code made by world-class developers.
+          <p className="text-gray-300 text-base sm:text-lg mb-10 leading-relaxed">
+            Discover thousands of themes, plugins, scripts and source code<br className="hidden sm:block" /> made by world-class developers.
           </p>
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 max-w-xl mx-auto">
             <input
@@ -143,46 +143,8 @@ export default function Home() {
           </div>
         )}
 
-        {/* Featured panel + product grid */}
-        <div className="flex gap-6 items-start">
-          {/* Left featured panel */}
-          {!hasFilters && (
-            <div className="hidden lg:flex w-64 shrink-0 bg-white border border-gray-200 rounded-xl p-6 flex-col justify-between min-h-[420px]">
-              <div>
-                <h2 className="text-xl font-bold text-gray-800 leading-snug mb-3">
-                  Browse this week's best selling digital assets
-                </h2>
-                <p className="text-sm text-gray-500">
-                  The best web themes, plugins &amp; scripts have arrived.
-                </p>
-                {/* Dynamic category links in panel */}
-                {categories.length > 0 && (
-                  <ul className="mt-5 space-y-2">
-                    {categories.slice(0, 5).map(cat => (
-                      <li key={cat.id}>
-                        <button onClick={() => setCategory(cat.slug)}
-                          className="text-sm text-gray-600 hover:text-primary flex items-center gap-2 transition-colors capitalize">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                          </svg>
-                          {cat.name}
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-              {categories.length > 0 && (
-                <button onClick={() => setCategory(categories[0].slug)}
-                  className="mt-6 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors w-fit">
-                  View more bestsellers
-                </button>
-              )}
-            </div>
-          )}
-
-          {/* Product grid */}
-          <div className="flex-1">
+        {/* Product grid — full width */}
+        <div>
             {products.length === 0 ? (
               <div className="text-center py-20 text-gray-400">
                 <div className="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -196,13 +158,12 @@ export default function Home() {
                 </button>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-5">
                 {products.map((p) => <ProductCard key={p.id} product={p} />)}
               </div>
             )}
             {products.length > 0 && <div className="mt-10"><Pagination hasNext={hasNext} /></div>}
           </div>
-        </div>
       </div>
 
       {/* End of content */}
