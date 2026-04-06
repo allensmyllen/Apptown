@@ -112,7 +112,7 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {loadingMsgs ? (
             <div className="flex items-center justify-center py-8 text-gray-400 text-sm gap-2">
-              <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
               Loading messages…
             </div>
           ) : messages.length === 0 ? (
@@ -120,7 +120,7 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
           ) : messages.map(msg => (
             <div key={msg.id} className={`flex flex-col gap-0.5 ${msg.sender_role === 'admin' ? 'items-end' : 'items-start'}`}>
               <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                msg.sender_role === 'admin' ? 'bg-green-500 text-white rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+                msg.sender_role === 'admin' ? 'bg-primary text-white rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm'
               }`}>
                 {msg.body && <p>{msg.body}</p>}
                 <FileAttachment url={msg.file_url} />
@@ -147,7 +147,7 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
               <input type="text" value={msgInput} onChange={e => setMsgInput(e.target.value)}
                 onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()}
                 placeholder="Type a reply…"
-                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400" />
+                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
               <input ref={fileInputRef} type="file" className="hidden" onChange={e => setAttachFile(e.target.files[0] || null)} />
               <button onClick={() => fileInputRef.current?.click()}
                 className="border border-gray-200 text-gray-500 hover:text-gray-700 hover:bg-gray-50 px-3 py-2 rounded-lg transition-colors" title="Attach file">
@@ -156,7 +156,7 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
                 </svg>
               </button>
               <button onClick={handleSend} disabled={sending || (!msgInput.trim() && !attachFile)}
-                className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50">
+                className="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50">
                 {sending ? 'Sending…' : 'Send'}
               </button>
             </div>
@@ -210,7 +210,7 @@ export default function AdminSupport() {
         {STATUS_TABS.map(tab => (
           <button key={tab.value} onClick={() => { setStatusFilter(tab.value); setSelectedTicket(null); }}
             className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              statusFilter === tab.value ? 'bg-green-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+              statusFilter === tab.value ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
             }`}>
             {tab.label}
           </button>

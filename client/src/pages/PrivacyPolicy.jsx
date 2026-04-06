@@ -73,7 +73,7 @@ export default function PrivacyPolicy() {
             <li>Request deletion of your data</li>
             <li>Object to or restrict processing of your data</li>
           </ul>
-          <p className="mt-2">To exercise these rights, contact us at <a href="mailto:privacy@devmarket.com" className="text-green-600 hover:underline">privacy@devmarket.com</a>.</p>
+          <p className="mt-2">To exercise these rights, contact us at <a href="mailto:privacy@devmarket.com" className="text-primary hover:underline">privacy@devmarket.com</a>.</p>
         </section>
 
         <section>
@@ -86,7 +86,7 @@ export default function PrivacyPolicy() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">9. Contact</h2>
           <p>
-            If you have questions about this Privacy Policy, contact us at <a href="mailto:privacy@devmarket.com" className="text-green-600 hover:underline">privacy@devmarket.com</a>.
+            If you have questions about this Privacy Policy, contact us at <a href="mailto:privacy@devmarket.com" className="text-primary hover:underline">privacy@devmarket.com</a>.
           </p>
         </section>
 

@@ -14,8 +14,8 @@ function trapFocus(containerRef, e) {
   else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
 }
 
-const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400';
-const btnCls   = 'w-full bg-green-500 hover:bg-green-600 disabled:opacity-50 disabled:cursor-not-allowed text-white py-2.5 rounded-lg font-semibold text-sm transition-colors';
+const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary';
+const btnCls   = 'w-full bg-primary hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed text-white py-2.5 rounded-lg font-semibold text-sm transition-colors';
 
 // ── OTP input — 6 boxes ──────────────────────────────────────────────────────
 function OtpInput({ value, onChange }) {
@@ -60,7 +60,7 @@ function OtpInput({ value, onChange }) {
           onChange={(e) => handleChange(i, e)}
           onKeyDown={(e) => handleKey(i, e)}
           onPaste={handlePaste}
-          className="w-11 h-12 text-center text-lg font-bold border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400"
+          className="w-11 h-12 text-center text-lg font-bold border border-gray-200 rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary"
         />
       ))}
     </div>
@@ -105,13 +105,13 @@ function LoginView({ onSwitchView, onError, loading, setLoading, onSuccess }) {
           <input type="password" value={form.password} onChange={e => setForm({ ...form, password: e.target.value })} required className={inputCls} autoComplete="current-password" />
         </div>
         <div className="text-right">
-          <button type="button" onClick={() => onSwitchView('forgot-password')} className="text-xs text-green-600 hover:underline">Forgot password?</button>
+          <button type="button" onClick={() => onSwitchView('forgot-password')} className="text-xs text-primary hover:underline">Forgot password?</button>
         </div>
         <button type="submit" disabled={loading} className={btnCls}>{loading ? 'Signing in…' : 'Sign In'}</button>
       </form>
       <p className="text-center text-sm text-gray-500 mt-4">
         Don't have an account?{' '}
-        <button onClick={() => onSwitchView('register')} className="text-green-600 font-medium hover:underline">Create one</button>
+        <button onClick={() => onSwitchView('register')} className="text-primary font-medium hover:underline">Create one</button>
       </p>
     </>
   );
@@ -161,7 +161,7 @@ function RegisterView({ onSwitchView, onError, loading, setLoading }) {
       </form>
       <p className="text-center text-sm text-gray-500 mt-4">
         Already have an account?{' '}
-        <button onClick={() => onSwitchView('login')} className="text-green-600 font-medium hover:underline">Sign in</button>
+        <button onClick={() => onSwitchView('login')} className="text-primary font-medium hover:underline">Sign in</button>
       </p>
     </>
   );
@@ -204,8 +204,8 @@ function VerifyRegisterView({ ctx, onSuccess, onError, loading, setLoading }) {
 
   return (
     <>
-      <div className="flex items-center justify-center w-12 h-12 bg-green-50 rounded-full mx-auto mb-4">
-        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+      <div className="flex items-center justify-center w-12 h-12 bg-blue-50 rounded-full mx-auto mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       </div>
@@ -220,7 +220,7 @@ function VerifyRegisterView({ ctx, onSuccess, onError, loading, setLoading }) {
       </form>
       <p className="text-center text-xs text-gray-400 mt-4">
         Didn't receive it?{' '}
-        <button onClick={handleResend} className="text-green-600 hover:underline font-medium">
+        <button onClick={handleResend} className="text-primary hover:underline font-medium">
           {resent ? 'Sent!' : 'Resend code'}
         </button>
       </p>
@@ -262,7 +262,7 @@ function ForgotPasswordView({ onSwitchView, onError, loading, setLoading }) {
         <button type="submit" disabled={loading} className={btnCls}>{loading ? 'Sending…' : 'Send Code'}</button>
       </form>
       <p className="text-center text-sm text-gray-500 mt-4">
-        <button onClick={() => onSwitchView('login')} className="text-green-600 hover:underline">← Back to sign in</button>
+        <button onClick={() => onSwitchView('login')} className="text-primary hover:underline">← Back to sign in</button>
       </p>
     </>
   );
@@ -321,7 +321,7 @@ function VerifyResetView({ ctx, onSwitchView, onError, loading, setLoading }) {
       </form>
       <p className="text-center text-xs text-gray-400 mt-4">
         Didn't receive it?{' '}
-        <button onClick={handleResend} className="text-green-600 hover:underline font-medium">
+        <button onClick={handleResend} className="text-primary hover:underline font-medium">
           {resent ? 'Sent!' : 'Resend code'}
         </button>
       </p>
@@ -353,8 +353,8 @@ function NewPasswordView({ ctx, onSwitchView, onError, loading, setLoading }) {
   if (done) {
     return (
       <>
-        <div className="flex items-center justify-center w-12 h-12 bg-green-50 rounded-full mx-auto mb-4">
-          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <div className="flex items-center justify-center w-12 h-12 bg-blue-50 rounded-full mx-auto mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>

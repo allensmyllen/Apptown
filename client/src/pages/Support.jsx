@@ -176,19 +176,19 @@ export default function Support() {
       )}
 
       {paymentStatus && typeof paymentStatus === 'object' && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-5">
+        <div className="bg-blue-50 border border-primary/30 rounded-xl p-5">
           <div className="flex items-center gap-2 mb-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="text-sm font-semibold text-green-700">Support License Activated!</p>
+            <p className="text-sm font-semibold text-primary">Support License Activated!</p>
           </div>
-          <p className="text-xs text-green-600 mb-2">Product: {paymentStatus.product_title}</p>
-          <p className="text-xs text-green-600 mb-1">Your license key:</p>
-          <div className="bg-white border border-green-200 rounded-lg px-3 py-2 font-mono text-sm font-bold text-gray-800 tracking-wider">
+          <p className="text-xs text-primary mb-2">Product: {paymentStatus.product_title}</p>
+          <p className="text-xs text-primary mb-1">Your license key:</p>
+          <div className="bg-white border border-primary/30 rounded-lg px-3 py-2 font-mono text-sm font-bold text-gray-800 tracking-wider">
             {paymentStatus.key}
           </div>
-          <p className="text-xs text-green-500 mt-2">A confirmation email has been sent to you. Use this key below to submit support requests.</p>
+          <p className="text-xs text-primary mt-2">A confirmation email has been sent to you. Use this key below to submit support requests.</p>
         </div>
       )}
 
@@ -207,12 +207,12 @@ export default function Support() {
             value={licenseKey}
             onChange={(e) => setLicenseKey(e.target.value)}
             placeholder="SL-XXXXXXXX-XXXXXXXX-XXXXXXXX"
-            className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <button
             type="submit"
             disabled={verifying}
-            className="bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+            className="bg-primary hover:bg-primary/90 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
           >
             {verifying ? 'Verifying…' : 'Verify'}
           </button>
@@ -231,13 +231,13 @@ export default function Support() {
                   {license.requests_used} / {license.requests_total} used
                 </p>
               </div>
-              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${exhausted ? 'bg-red-50 text-red-500' : 'bg-green-50 text-green-600'}`}>
+              <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${exhausted ? 'bg-red-50 text-red-500' : 'bg-blue-50 text-primary'}`}>
                 {exhausted ? 'Exhausted' : 'Active'}
               </span>
             </div>
 
             {confirmation && (
-              <div className="bg-green-50 border border-green-200 rounded-xl p-4 text-sm text-green-700">
+              <div className="bg-blue-50 border border-primary/30 rounded-xl p-4 text-sm text-primary">
                 Support request submitted. Ticket ID: <span className="font-mono font-semibold">{confirmation.ticketId}</span>
               </div>
             )}
@@ -245,7 +245,7 @@ export default function Support() {
             {!exhausted && !showRequestForm && !confirmation && (
               <button
                 onClick={() => setShowRequestForm(true)}
-                className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
               >
                 Request Support
               </button>
@@ -261,7 +261,7 @@ export default function Support() {
                 </button>
                 <p className="text-sm text-gray-500">
                   You&apos;ve used all your support requests.{' '}
-                  <a href="/" className="text-green-600 hover:underline">Purchase another support license</a> to continue.
+                  <a href="/" className="text-primary hover:underline">Purchase another support license</a> to continue.
                 </p>
               </div>
             )}
@@ -273,14 +273,14 @@ export default function Support() {
                   onChange={(e) => setRequestMessage(e.target.value)}
                   placeholder="Describe your issue…"
                   rows={4}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 resize-none"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 />
                 {submitError && <p className="text-sm text-red-500">{submitError}</p>}
                 <div className="flex gap-2">
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+                    className="bg-primary hover:bg-primary/90 disabled:opacity-60 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
                   >
                     {submitting ? 'Submitting…' : 'Submit'}
                   </button>
@@ -304,7 +304,7 @@ export default function Support() {
 
         {ticketsLoading ? (
           <div className="flex items-center justify-center py-8">
-            <div className="w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           </div>
         ) : tickets.length === 0 ? (
           <p className="text-sm text-gray-400 text-center py-6">No support tickets yet.</p>
@@ -330,7 +330,7 @@ export default function Support() {
                       </p>
                     </div>
                   </div>
-                  <span className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${ticket.status === 'open' ? 'bg-green-50 text-green-600' : 'bg-gray-100 text-gray-500'}`}>
+                  <span className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${ticket.status === 'open' ? 'bg-blue-50 text-primary' : 'bg-gray-100 text-gray-500'}`}>
                     {ticket.status}
                   </span>
                 </button>
@@ -340,7 +340,7 @@ export default function Support() {
                   <div className="mt-2 ml-2 border-l-2 border-gray-100 pl-4 space-y-3">
                     {messagesLoading ? (
                       <div className="flex items-center justify-center py-4">
-                        <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+                        <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                       </div>
                     ) : messages.length === 0 ? (
                       <p className="text-xs text-gray-400 py-2">No messages yet.</p>
@@ -351,7 +351,7 @@ export default function Support() {
                             key={msg.id}
                             className={`flex flex-col ${msg.sender_role === 'user' ? 'items-end' : 'items-start'}`}
                           >
-                            <div className={`max-w-[80%] rounded-xl px-3 py-2 text-sm ${msg.sender_role === 'user' ? 'bg-green-500 text-white' : 'bg-gray-100 text-gray-800'}`}>
+                            <div className={`max-w-[80%] rounded-xl px-3 py-2 text-sm ${msg.sender_role === 'user' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-800'}`}>
                               {msg.body}
                             </div>
                             <p className="text-xs text-gray-400 mt-0.5">
@@ -371,12 +371,12 @@ export default function Support() {
                           value={replyBody}
                           onChange={(e) => setReplyBody(e.target.value)}
                           placeholder="Type a message…"
-                          className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+                          className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                         />
                         <button
                           type="submit"
                           disabled={sendingReply}
-                          className="bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white text-sm font-semibold px-3 py-1.5 rounded-lg transition-colors"
+                          className="bg-primary hover:bg-primary/90 disabled:opacity-60 text-white text-sm font-semibold px-3 py-1.5 rounded-lg transition-colors"
                         >
                           {sendingReply ? '…' : 'Send'}
                         </button>

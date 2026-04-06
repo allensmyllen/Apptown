@@ -28,7 +28,7 @@ export function AdminTable({ cols = [], children, empty = 'No data found.', load
             <tr>
               <td colSpan={colSpan} className="px-4 py-12 text-center">
                 <div className="flex items-center justify-center gap-2 text-gray-400 text-sm">
-                  <div className="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+                  <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                   Loading…
                 </div>
               </td>
@@ -56,8 +56,8 @@ export function Td({ children, right = false, mono = false, className = '' }) {
 /** Status badge */
 export function Badge({ status }) {
   const map = {
-    completed: 'bg-green-50 text-green-700 ring-green-200',
-    active:    'bg-green-50 text-green-700 ring-green-200',
+    completed: 'bg-blue-50 text-primary ring-primary/30',
+    active:    'bg-blue-50 text-primary ring-primary/30',
     open:      'bg-blue-50 text-blue-700 ring-blue-200',
     pending:   'bg-amber-50 text-amber-700 ring-amber-200',
     blocked:   'bg-amber-50 text-amber-700 ring-amber-200',

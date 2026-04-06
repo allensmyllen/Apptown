@@ -45,7 +45,7 @@ export default function LicenseUse() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">5. Multiple Projects</h2>
           <p>
-            If you need to use the same product across multiple projects or for multiple clients, you must purchase a separate license for each use. Contact us at <a href="mailto:support@devmarket.com" className="text-green-600 hover:underline">support@devmarket.com</a> for bulk or extended licensing options.
+            If you need to use the same product across multiple projects or for multiple clients, you must purchase a separate license for each use. Contact us at <a href="mailto:support@devmarket.com" className="text-primary hover:underline">support@devmarket.com</a> for bulk or extended licensing options.
           </p>
         </section>
 
@@ -66,7 +66,7 @@ export default function LicenseUse() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">8. Contact</h2>
           <p>
-            Questions about licensing? Reach out at <a href="mailto:support@devmarket.com" className="text-green-600 hover:underline">support@devmarket.com</a>.
+            Questions about licensing? Reach out at <a href="mailto:support@devmarket.com" className="text-primary hover:underline">support@devmarket.com</a>.
           </p>
         </section>
 

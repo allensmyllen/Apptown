@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <span className="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
+              <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
               <span className="text-white font-bold text-base">devmarket</span>
             </Link>
             <p className="text-xs text-gray-500 leading-relaxed">

@@ -31,7 +31,7 @@ export default function Orders() {
 
   const completed = orders.filter(o => o.status === 'completed');
   const revenue = completed.reduce((s, o) => s + o.amount_cents, 0);
-  const inputCls = 'border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-400';
+  const inputCls = 'border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary';
 
   return (
     <AdminLayout>
@@ -40,7 +40,7 @@ export default function Orders() {
           <h1 className="text-xl font-bold text-gray-800">Orders</h1>
           <p className="text-sm text-gray-400 mt-0.5">
             {orders.length} order{orders.length !== 1 ? 's' : ''}
-            {completed.length > 0 && <span className="ml-2 text-green-600 font-medium">· ₦{(revenue / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })} revenue</span>}
+            {completed.length > 0 && <span className="ml-2 text-primary font-medium">· ₦{(revenue / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })} revenue</span>}
           </p>
         </div>
         <button onClick={handleExport} className="inline-flex items-center gap-2 border border-gray-200 bg-white text-gray-600 text-sm px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors self-start sm:self-auto">
@@ -59,7 +59,7 @@ export default function Orders() {
           <label className="block text-xs font-medium text-gray-500 mb-1">To</label>
           <input type="date" value={to} onChange={e => setTo(e.target.value)} className={inputCls} />
         </div>
-        <button onClick={load} className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors">Apply</button>
+        <button onClick={load} className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-lg text-sm font-semibold transition-colors">Apply</button>
         {(from || to) && <button onClick={() => { setFrom(''); setTo(''); setTimeout(load, 0); }} className="text-sm text-gray-400 hover:text-gray-600">Clear</button>}
       </div>
 

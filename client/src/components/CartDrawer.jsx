@@ -53,7 +53,7 @@ export default function CartDrawer({ open, onClose }) {
             </svg>
             <h2 className="font-bold text-gray-800">Cart</h2>
             {items.length > 0 && (
-              <span className="bg-green-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{items.length}</span>
+              <span className="bg-primary text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{items.length}</span>
             )}
           </div>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
@@ -119,7 +119,7 @@ export default function CartDrawer({ open, onClose }) {
               <span className="text-xl font-bold text-gray-800">₦{(total / 100).toFixed(2)}</span>
             </div>
             <button onClick={handleCheckout} disabled={loading}
-              className="w-full bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+              className="w-full bg-primary hover:bg-primary/90 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
               {loading ? (
                 <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Processing…</>
               ) : (

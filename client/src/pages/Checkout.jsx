@@ -42,7 +42,7 @@ export default function Checkout() {
     return (
       <div className="max-w-lg mx-auto mt-20 text-center">
         <div className="flex items-center justify-center gap-3 text-gray-500">
-          <div className="w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           <span className="text-sm">Confirming your payment…</span>
         </div>
       </div>
@@ -53,14 +53,14 @@ export default function Checkout() {
   if (status === 'success') {
     return (
       <div className="max-w-lg mx-auto mt-16 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-        <div className="bg-green-500 px-8 py-10 text-center">
+        <div className="bg-primary px-8 py-10 text-center">
           <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-9 h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-white">Payment Successful!</h1>
-          <p className="text-green-100 text-sm mt-2">Your order has been confirmed.</p>
+          <p className="text-blue-100 text-sm mt-2">Your order has been confirmed.</p>
         </div>
         <div className="px-8 py-8 text-center">
           <p className="text-gray-600 text-sm leading-relaxed">
@@ -74,7 +74,7 @@ export default function Checkout() {
           )}
           <div className="mt-7 flex flex-col sm:flex-row gap-3 justify-center">
             <Link to="/downloads"
-              className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors">
+              className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors">
               <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
@@ -103,7 +103,7 @@ export default function Checkout() {
         <p className="text-gray-500 text-sm mt-3 mb-7">Your payment was not completed. No charge was made.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button onClick={() => navigate(-1)}
-            className="inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors">
+            className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors">
             Try Again
           </button>
           <Link to="/"
@@ -140,7 +140,7 @@ export default function Checkout() {
   return (
     <div className="max-w-lg mx-auto mt-20 text-center">
       <div className="flex items-center justify-center gap-3 text-gray-500">
-        <div className="w-5 h-5 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         <span className="text-sm">Loading…</span>
       </div>
     </div>

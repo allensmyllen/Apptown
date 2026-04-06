@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import api from '../services/api';
 import { useAuthModal } from '../hooks/useAuthModal';
 
-const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400';
+const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary';
 
 export default function ResetPassword() {
   const [searchParams] = useSearchParams();
@@ -23,7 +23,7 @@ export default function ResetPassword() {
         <h1 className="text-xl font-bold text-gray-800">Invalid Reset Link</h1>
         <p className="text-gray-500 text-sm mt-2">This password reset link is invalid or has expired.</p>
         <button onClick={() => openModal('forgot-password')}
-          className="mt-6 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors">
+          className="mt-6 bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors">
           Request a new link
         </button>
       </div>
@@ -37,7 +37,7 @@ export default function ResetPassword() {
         <h1 className="text-xl font-bold text-gray-800">Password Updated</h1>
         <p className="text-gray-500 text-sm mt-2">Your password has been reset successfully.</p>
         <button onClick={() => openModal('login')}
-          className="mt-6 bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors">
+          className="mt-6 bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors">
           Sign In
         </button>
       </div>
@@ -76,7 +76,7 @@ export default function ResetPassword() {
         </div>
         {error && <p role="alert" className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>}
         <button type="submit" disabled={loading}
-          className="w-full bg-green-500 hover:bg-green-600 disabled:opacity-50 text-white py-2.5 rounded-lg font-semibold text-sm transition-colors">
+          className="w-full bg-primary hover:bg-primary/90 disabled:opacity-50 text-white py-2.5 rounded-lg font-semibold text-sm transition-colors">
           {loading ? 'Updating…' : 'Reset Password'}
         </button>
       </form>

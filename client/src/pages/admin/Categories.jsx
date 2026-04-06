@@ -39,7 +39,7 @@ export default function Categories() {
     catch (err) { setDeleteError(err.response?.data?.error || 'Failed to delete'); }
   }
 
-  const inputCls = 'border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-400';
+  const inputCls = 'border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary';
 
   return (
     <AdminLayout>
@@ -50,7 +50,7 @@ export default function Categories() {
         </div>
         <form onSubmit={handleCreate} className="flex gap-2">
           <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="New category name…" required className={inputCls + ' w-48 sm:w-56'} />
-          <button type="submit" disabled={creating} className="bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap">
+          <button type="submit" disabled={creating} className="bg-primary hover:bg-primary/90 disabled:opacity-60 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors whitespace-nowrap">
             {creating ? 'Adding…' : '+ Add'}
           </button>
         </form>
@@ -66,7 +66,7 @@ export default function Categories() {
               {editingId === cat.id ? (
                 <form onSubmit={e => handleEdit(e, cat.id)} className="flex items-center gap-2">
                   <input value={editName} onChange={e => setEditName(e.target.value)} required autoFocus className={inputCls} />
-                  <button type="submit" className="text-green-600 text-xs font-semibold hover:text-green-800 whitespace-nowrap">Save</button>
+                  <button type="submit" className="text-primary text-xs font-semibold hover:text-primary whitespace-nowrap">Save</button>
                   <button type="button" onClick={() => setEditingId(null)} className="text-gray-400 text-xs hover:text-gray-600 whitespace-nowrap">Cancel</button>
                   {editError && <span className="text-red-500 text-xs">{editError}</span>}
                 </form>

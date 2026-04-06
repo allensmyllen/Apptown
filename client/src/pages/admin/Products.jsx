@@ -12,7 +12,7 @@ function ProductModal({ open, editing, form, onChange, onSubmit, onClose, catego
     return () => { document.body.style.overflow = ''; };
   }, [open]);
   if (!open) return null;
-  const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-400 bg-gray-50';
+  const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-primary bg-gray-50';
   return (
     <div ref={overlayRef} className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4" onMouseDown={e => { if (e.target === overlayRef.current) onClose(); }}>
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
@@ -47,19 +47,19 @@ function ProductModal({ open, editing, form, onChange, onSubmit, onClose, catego
               <input name="supportPrice" type="number" min="0" step="0.01" placeholder="e.g. 5000 = ₦5,000" value={form.supportPrice} onChange={onChange} className={inputCls} />
               {form.supportPrice && <p className="text-xs text-gray-400 mt-1">= ₦{parseFloat(form.supportPrice).toFixed(2)} stored as {Math.round(parseFloat(form.supportPrice) * 100)} kobo</p>}
             </div>
-            {!editing && <div><label className="block text-xs font-medium text-gray-600 mb-1">Product File * (.zip, .rar, .tar.gz)</label><input type="file" accept=".zip,.rar,.tar.gz" onChange={e => setFile(e.target.files[0])} className="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-50 file:text-green-700 file:text-sm file:font-medium hover:file:bg-green-100 cursor-pointer" /></div>}
+            {!editing && <div><label className="block text-xs font-medium text-gray-600 mb-1">Product File * (.zip, .rar, .tar.gz)</label><input type="file" accept=".zip,.rar,.tar.gz" onChange={e => setFile(e.target.files[0])} className="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-primary file:text-sm file:font-medium hover:file:bg-blue-100 cursor-pointer" /></div>}
             <div>
               <label className="block text-xs font-medium text-gray-600 mb-1">Product Image <span className="text-gray-400 font-normal">(jpg, png, webp — max 5MB)</span></label>
               <input type="file" accept="image/jpeg,image/png,image/webp" onChange={e => { const f = e.target.files[0]; setImageFile(f || null); setImagePreview(f ? URL.createObjectURL(f) : null); }} className="w-full text-sm text-gray-600 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 file:text-blue-700 file:text-sm file:font-medium hover:file:bg-blue-100 cursor-pointer" />
               {imagePreview && <img src={imagePreview} alt="Preview" className="mt-2 h-24 w-auto rounded-lg border border-gray-200 object-cover" />}
             </div>
             {error && <p role="alert" className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>}
-            {success && <p className="text-green-600 text-sm bg-green-50 border border-green-200 rounded-lg px-3 py-2">{success}</p>}
+            {success && <p className="text-primary text-sm bg-blue-50 border border-primary/30 rounded-lg px-3 py-2">{success}</p>}
           </form>
         </div>
         <div className="px-6 py-4 border-t border-gray-100 flex gap-3 justify-end">
           <button type="button" onClick={onClose} className="border border-gray-300 text-gray-600 px-5 py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors">Cancel</button>
-          <button type="submit" form="product-form" className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors">{editing ? 'Save Changes' : 'Create Product'}</button>
+          <button type="submit" form="product-form" className="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg text-sm font-semibold transition-colors">{editing ? 'Save Changes' : 'Create Product'}</button>
         </div>
       </div>
     </div>
@@ -136,7 +136,7 @@ export default function Products() {
           <h1 className="text-xl font-bold text-gray-800">Products</h1>
           <p className="text-sm text-gray-400 mt-0.5">{products.length} product{products.length !== 1 ? 's' : ''}</p>
         </div>
-        <button onClick={openAdd} className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors self-start sm:self-auto">
+        <button onClick={openAdd} className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors self-start sm:self-auto">
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
           Add Product
         </button>
@@ -149,11 +149,11 @@ export default function Products() {
               <div className="flex items-center gap-3">
                 {p.image_url
                   ? <img src={p.image_url} alt={p.title} className="w-9 h-9 rounded-lg object-cover border border-gray-100 shrink-0" />
-                  : <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-green-400 to-blue-500 shrink-0" />
+                  : <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-primary/80 to-blue-500 shrink-0" />
                 }
                 <div>
                   <p className="font-medium text-gray-800 text-sm">{p.title}</p>
-                  {p.preview_link && <a href={p.preview_link} target="_blank" rel="noopener noreferrer" className="text-xs text-green-600 hover:underline">Live Preview ↗</a>}
+                  {p.preview_link && <a href={p.preview_link} target="_blank" rel="noopener noreferrer" className="text-xs text-primary hover:underline">Live Preview ↗</a>}
                 </div>
               </div>
             </Td>

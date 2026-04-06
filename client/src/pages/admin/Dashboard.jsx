@@ -103,7 +103,7 @@ export default function Dashboard() {
           <p className="text-sm text-gray-400 mt-0.5">Welcome back. Here's your store at a glance.</p>
         </div>
         <Link to="/admin/products"
-          className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 self-start sm:self-auto">
+          className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors flex items-center gap-2 self-start sm:self-auto">
           <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
@@ -118,7 +118,7 @@ export default function Dashboard() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8">
-        <StatCard label="Total Revenue" value={revenue} bg="bg-green-50" iconColor="text-green-500"
+        <StatCard label="Total Revenue" value={revenue} bg="bg-blue-50" iconColor="text-primary"
           icon={<svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>}
         />
         <StatCard label="Completed Orders" value={metrics?.completed_orders?.toLocaleString()} bg="bg-blue-50" iconColor="text-blue-500"
@@ -139,7 +139,7 @@ export default function Dashboard() {
               <p className="text-sm font-semibold text-gray-800">Revenue</p>
               <p className="text-xs text-gray-400 mt-0.5">{periodLabel}</p>
             </div>
-            <p className="text-sm font-bold text-green-600">
+            <p className="text-sm font-bold text-primary">
               ₦{(periodRevenue / 100).toLocaleString('en-NG', { minimumFractionDigits: 2 })}
             </p>
           </div>
@@ -219,13 +219,13 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {QUICK_LINKS.map(({ to, label, desc, icon, bg }) => (
           <Link key={to} to={to}
-            className="bg-white rounded-xl border border-gray-100 p-5 flex items-start gap-4 hover:border-green-200 hover:shadow-sm transition-all group">
+            className="bg-white rounded-xl border border-gray-100 p-5 flex items-start gap-4 hover:border-primary/30 hover:shadow-sm transition-all group">
             <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${bg}`}>{icon}</div>
             <div className="min-w-0">
-              <p className="font-semibold text-gray-800 text-sm group-hover:text-green-600 transition-colors">{label}</p>
+              <p className="font-semibold text-gray-800 text-sm group-hover:text-primary transition-colors">{label}</p>
               <p className="text-xs text-gray-400 mt-0.5">{desc}</p>
             </div>
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-300 ml-auto shrink-0 mt-0.5 group-hover:text-green-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-300 ml-auto shrink-0 mt-0.5 group-hover:text-primary/80 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </Link>

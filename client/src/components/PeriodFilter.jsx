@@ -73,7 +73,7 @@ export default function PeriodFilter({ onChange }) {
             onClick={() => handlePreset(preset)}
             className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
               active === preset.label
-                ? 'bg-green-500 text-white'
+                ? 'bg-primary text-white'
                 : 'bg-[#1a1a2e] text-gray-300 hover:bg-[#252545] border border-gray-700'
             }`}
           >
@@ -91,7 +91,7 @@ export default function PeriodFilter({ onChange }) {
                 type="date"
                 value={customStart}
                 onChange={handleStartChange}
-                className="bg-[#1a1a2e] border border-gray-700 text-gray-200 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-green-500"
+                className="bg-[#1a1a2e] border border-gray-700 text-gray-200 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-primary"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -100,7 +100,7 @@ export default function PeriodFilter({ onChange }) {
                 type="date"
                 value={customEnd}
                 onChange={handleEndChange}
-                className="bg-[#1a1a2e] border border-gray-700 text-gray-200 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-green-500"
+                className="bg-[#1a1a2e] border border-gray-700 text-gray-200 text-sm rounded-lg px-3 py-1.5 focus:outline-none focus:border-primary"
               />
             </div>
           </div>

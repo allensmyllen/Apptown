@@ -5,7 +5,7 @@ const CATEGORY_GRADIENTS = {
   theme: 'from-purple-600 to-indigo-700',
   plugin: 'from-blue-600 to-cyan-700',
   script: 'from-yellow-500 to-orange-600',
-  source_code: 'from-green-600 to-teal-700',
+  source_code: 'from-primary to-teal-700',
 };
 
 function StarRating({ rating = 4.5 }) {
@@ -64,7 +64,7 @@ export default function ProductCard({ product }) {
       {/* Card body */}
       <div className="p-2 sm:p-3">
         <Link to={`/products/${id}`}>
-          <h2 className="text-sm font-semibold text-gray-800 hover:text-green-600 line-clamp-2 leading-snug min-h-[2.5rem]">
+          <h2 className="text-sm font-semibold text-gray-800 hover:text-primary line-clamp-2 leading-snug min-h-[2.5rem]">
             {title}
           </h2>
         </Link>
@@ -89,13 +89,13 @@ export default function ProductCard({ product }) {
             <button
               onClick={(e) => { e.preventDefault(); addItem(product); }}
               title={inCart ? 'In cart' : 'Add to cart'}
-              className={`p-1.5 rounded border transition-colors shrink-0 ${inCart ? 'border-green-400 text-green-600 bg-green-50' : 'border-gray-200 text-gray-400 hover:border-green-400 hover:text-green-600'}`}>
+              className={`p-1.5 rounded border transition-colors shrink-0 ${inCart ? 'border-primary/80 text-primary bg-blue-50' : 'border-gray-200 text-gray-400 hover:border-primary/80 hover:text-primary'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </button>
             <Link to={`/products/${id}`}
-              className="flex-1 text-center bg-green-500 hover:bg-green-600 text-white text-xs font-semibold px-2 py-1.5 rounded transition-colors">
+              className="flex-1 text-center bg-primary hover:bg-primary/90 text-white text-xs font-semibold px-2 py-1.5 rounded transition-colors">
               Buy Now
             </Link>
           </div>

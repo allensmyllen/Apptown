@@ -9,14 +9,14 @@ const CATEGORY_GRADIENTS = {
   theme: 'from-purple-600 to-indigo-700',
   plugin: 'from-blue-600 to-cyan-700',
   script: 'from-yellow-500 to-orange-600',
-  source_code: 'from-green-600 to-teal-700',
+  source_code: 'from-primary to-teal-700',
 };
 
 const CATEGORY_COLORS = {
   theme: 'bg-purple-50 text-purple-700 border-purple-100',
   plugin: 'bg-blue-50 text-blue-700 border-blue-100',
   script: 'bg-yellow-50 text-yellow-700 border-yellow-100',
-  source_code: 'bg-green-50 text-green-700 border-green-100',
+  source_code: 'bg-blue-50 text-primary border-primary/20',
 };
 
 function Stars({ rating, interactive = false, onSelect }) {
@@ -124,7 +124,7 @@ export default function ProductDetail() {
   if (!product) {
     return (
       <div className="flex items-center justify-center py-32">
-        <div className="w-6 h-6 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -166,7 +166,7 @@ export default function ProductDetail() {
             <p className="text-gray-600 leading-relaxed text-sm">{product.description}</p>
             {product.preview_link && (
               <a href={product.preview_link} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 mt-5 text-sm font-medium text-green-600 border border-green-200 bg-green-50 rounded-lg px-4 py-2 hover:bg-green-100 transition-colors">
+                className="inline-flex items-center gap-2 mt-5 text-sm font-medium text-primary border border-primary/30 bg-blue-50 rounded-lg px-4 py-2 hover:bg-blue-100 transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
@@ -194,7 +194,7 @@ export default function ProductDetail() {
               <div className="mb-6 bg-gray-50 rounded-xl p-4 border border-gray-100 text-center">
                 <p className="text-sm text-gray-500 mb-3">Sign in to leave a review</p>
                 <button onClick={() => openModal('login')}
-                  className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors">
+                  className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors">
                   Sign In
                 </button>
               </div>
@@ -215,12 +215,12 @@ export default function ProductDetail() {
                   placeholder="Share your experience with this product… (optional)"
                   rows={3}
                   maxLength={1000}
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-400 resize-none"
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary resize-none"
                 />
                 {reviewError && <p className="text-red-600 text-xs mt-1">{reviewError}</p>}
-                {reviewSuccess && <p className="text-green-600 text-xs mt-1">{reviewSuccess}</p>}
+                {reviewSuccess && <p className="text-primary text-xs mt-1">{reviewSuccess}</p>}
                 <button type="submit" disabled={submitting}
-                  className="mt-3 bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors">
+                  className="mt-3 bg-primary hover:bg-primary/90 disabled:opacity-60 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors">
                   {submitting ? 'Submitting…' : 'Submit Review'}
                 </button>
               </form>
@@ -238,7 +238,7 @@ export default function ProductDetail() {
               <div className="space-y-4">
                 {reviews.map(r => (
                   <div key={r.id} className="flex gap-3 pb-4 border-b border-gray-100 last:border-0 last:pb-0">
-                    <div className="w-9 h-9 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold shrink-0">
                       {r.initials}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -302,7 +302,7 @@ export default function ProductDetail() {
             <div className="mt-5 space-y-2">
               {!user ? (
                 <button onClick={() => openModal('login')}
-                  className="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-xl font-semibold text-sm transition-colors">
+                  className="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-xl font-semibold text-sm transition-colors">
                   Sign in to Purchase
                 </button>
               ) : hasPurchased ? (
@@ -315,7 +315,7 @@ export default function ProductDetail() {
                     Already Purchased
                   </button>
                   <Link to="/downloads"
-                    className="w-full py-2.5 rounded-xl font-semibold text-sm transition-colors border border-green-400 text-green-600 bg-green-50 hover:bg-green-100 flex items-center justify-center gap-2">
+                    className="w-full py-2.5 rounded-xl font-semibold text-sm transition-colors border border-primary/80 text-primary bg-blue-50 hover:bg-blue-100 flex items-center justify-center gap-2">
                     Go to My Downloads
                   </Link>
                   {product.support_price_cents && (
@@ -328,14 +328,14 @@ export default function ProductDetail() {
               ) : (
                 <>
                   <button onClick={handleBuy} disabled={buying}
-                    className="w-full bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                    className="w-full bg-primary hover:bg-primary/90 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2">
                     {buying
                       ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Redirecting…</>
                       : <>Buy Now</>
                     }
                   </button>
                   <button onClick={() => addItem(product)}
-                    className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors border flex items-center justify-center gap-2 ${inCart ? 'border-green-400 text-green-600 bg-green-50' : 'border-gray-200 text-gray-600 hover:border-green-400 hover:text-green-600'}`}>
+                    className={`w-full py-2.5 rounded-xl font-semibold text-sm transition-colors border flex items-center justify-center gap-2 ${inCart ? 'border-primary/80 text-primary bg-blue-50' : 'border-gray-200 text-gray-600 hover:border-primary/80 hover:text-primary'}`}>
                     {inCart ? 'Added to Cart' : 'Add to Cart'}
                   </button>
                 </>
@@ -350,7 +350,7 @@ export default function ProductDetail() {
                 { icon: 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z', label: '24/7 support' },
               ].map(({ icon, label }) => (
                 <div key={label} className="flex items-center gap-2 text-xs text-gray-500">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-green-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-primary shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d={icon} />
                   </svg>
                   {label}

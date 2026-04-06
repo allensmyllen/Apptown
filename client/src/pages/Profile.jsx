@@ -3,7 +3,7 @@ import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
 // v2 — tabbed layout
 
-const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400';
+const inputCls = 'w-full border border-gray-200 rounded-lg px-3 py-2.5 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary';
 const disabledCls = 'w-full border border-gray-100 rounded-lg px-3 py-2.5 text-sm bg-gray-100 text-gray-400 cursor-not-allowed';
 
 function TabButton({ active, onClick, children }) {
@@ -103,7 +103,7 @@ export default function Profile() {
 
       {/* Avatar card */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6 flex items-center gap-5">
-        <div className="w-16 h-16 rounded-full bg-green-500 flex items-center justify-center text-white text-2xl font-bold shrink-0">
+        <div className="w-16 h-16 rounded-full bg-primary flex items-center justify-center text-white text-2xl font-bold shrink-0">
           {initials}
         </div>
         <div>
@@ -186,10 +186,10 @@ export default function Profile() {
             </div>
 
             {profileErr && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">{profileErr}</p>}
-            {profileMsg && <p className="text-green-600 text-sm bg-green-50 border border-green-200 rounded-lg px-3 py-2">{profileMsg}</p>}
+            {profileMsg && <p className="text-primary text-sm bg-blue-50 border border-primary/30 rounded-lg px-3 py-2">{profileMsg}</p>}
 
             <button type="submit" disabled={savingProfile}
-              className="bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+              className="bg-primary hover:bg-primary/90 disabled:opacity-60 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
               {savingProfile ? 'Saving…' : 'Save Changes'}
             </button>
           </form>
@@ -215,9 +215,9 @@ export default function Profile() {
               <input type="password" value={confirmPw} onChange={e => setConfirmPw(e.target.value)} required className={inputCls} autoComplete="new-password" />
             </div>
             {pwErr && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">{pwErr}</p>}
-            {pwMsg && <p className="text-green-600 text-sm bg-green-50 border border-green-200 rounded-lg px-3 py-2">{pwMsg}</p>}
+            {pwMsg && <p className="text-primary text-sm bg-blue-50 border border-primary/30 rounded-lg px-3 py-2">{pwMsg}</p>}
             <button type="submit" disabled={savingPw}
-              className="bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+              className="bg-primary hover:bg-primary/90 disabled:opacity-60 text-white px-6 py-2.5 rounded-lg text-sm font-semibold transition-colors">
               {savingPw ? 'Saving…' : 'Change Password'}
             </button>
           </form>

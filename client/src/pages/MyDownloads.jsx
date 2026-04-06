@@ -7,7 +7,7 @@ const CATEGORY_COLORS = {
   theme: 'bg-purple-50 text-purple-600',
   plugin: 'bg-blue-50 text-blue-600',
   script: 'bg-yellow-50 text-yellow-600',
-  source_code: 'bg-green-50 text-green-600',
+  source_code: 'bg-blue-50 text-primary',
 };
 
 function CopyButton({ text }) {
@@ -16,9 +16,9 @@ function CopyButton({ text }) {
     try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); } catch {}
   }
   return (
-    <button onClick={copy} className="text-gray-400 hover:text-green-600 transition-colors shrink-0" title="Copy">
+    <button onClick={copy} className="text-gray-400 hover:text-primary transition-colors shrink-0" title="Copy">
       {copied
-        ? <span className="text-xs text-green-600 font-medium">Copied!</span>
+        ? <span className="text-xs text-primary font-medium">Copied!</span>
         : <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
       }
     </button>
@@ -57,7 +57,7 @@ export default function MyDownloads() {
       {/* Tabs */}
       <div className="flex gap-1 mb-6 bg-white border border-gray-200 rounded-xl p-1 w-fit">
         <button onClick={() => setActiveTab('downloads')}
-          className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeTab === 'downloads' ? 'bg-green-500 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}>
+          className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-colors ${activeTab === 'downloads' ? 'bg-primary text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}>
           Downloads
         </button>
         <button onClick={() => setActiveTab('support')}
@@ -73,7 +73,7 @@ export default function MyDownloads() {
 
       {loading ? (
         <div className="flex items-center justify-center py-20">
-          <div className="w-6 h-6 border-2 border-green-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
         </div>
       ) : activeTab === 'downloads' ? (
         orders.length === 0 ? (
@@ -85,7 +85,7 @@ export default function MyDownloads() {
             </div>
             <h3 className="text-gray-700 font-semibold mb-1">No purchases yet</h3>
             <p className="text-sm text-gray-400 mb-5">Browse the marketplace and find something you love.</p>
-            <Link to="/" className="bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors inline-block">
+            <Link to="/" className="bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors inline-block">
               Browse Marketplace
             </Link>
           </div>
@@ -167,7 +167,7 @@ export default function MyDownloads() {
                     <p className="text-xs text-gray-400 mt-0.5">
                       {new Date(sl.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                       <span className="mx-1.5">·</span>
-                      <span className={sl.requests_used >= sl.requests_total ? 'text-red-500' : 'text-green-600'}>
+                      <span className={sl.requests_used >= sl.requests_total ? 'text-red-500' : 'text-primary'}>
                         {sl.requests_used} / {sl.requests_total} requests used
                       </span>
                     </p>

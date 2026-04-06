@@ -71,7 +71,7 @@ export default function TermsOfUse() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">9. Contact</h2>
           <p>
-            If you have any questions about these Terms, please contact us at <a href="mailto:support@devmarket.com" className="text-green-600 hover:underline">support@devmarket.com</a>.
+            If you have any questions about these Terms, please contact us at <a href="mailto:support@devmarket.com" className="text-primary hover:underline">support@devmarket.com</a>.
           </p>
         </section>
 

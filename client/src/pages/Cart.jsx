@@ -44,7 +44,7 @@ export default function Cart() {
         </div>
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Your cart is empty</h1>
         <p className="text-gray-500 text-sm mb-7">Browse the marketplace and add items to get started.</p>
-        <Link to="/" className="bg-green-500 hover:bg-green-600 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors">
+        <Link to="/" className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-colors">
           Browse Products
         </Link>
       </div>
@@ -89,7 +89,7 @@ export default function Cart() {
         <button
           onClick={handleCheckout}
           disabled={loading}
-          className="w-full bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-primary hover:bg-primary/90 disabled:opacity-60 text-white py-3 rounded-xl font-semibold text-sm transition-colors flex items-center justify-center gap-2"
         >
           {loading
             ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Processing…</>

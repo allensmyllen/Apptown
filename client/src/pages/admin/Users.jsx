@@ -66,8 +66,8 @@ function StatusModal({ user, onClose, onSave }) {
         <p className="text-xs text-gray-400 mb-4">{user.email}</p>
         <div className="space-y-2">
           {['active', 'banned', 'blocked'].map(s => (
-            <label key={s} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${status === s ? 'border-green-400 bg-green-50' : 'border-gray-200 hover:bg-gray-50'}`}>
-              <input type="radio" name="status" value={s} checked={status === s} onChange={() => setStatus(s)} className="accent-green-500" />
+            <label key={s} className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${status === s ? 'border-primary/80 bg-blue-50' : 'border-gray-200 hover:bg-gray-50'}`}>
+              <input type="radio" name="status" value={s} checked={status === s} onChange={() => setStatus(s)} className="accent-primary" />
               <div>
                 <p className="text-sm font-medium text-gray-800 capitalize">{s}</p>
                 <p className="text-xs text-gray-400">{s === 'active' ? 'Can log in normally' : s === 'banned' ? 'Permanently banned' : 'Temporarily blocked'}</p>
@@ -77,14 +77,14 @@ function StatusModal({ user, onClose, onSave }) {
           {status !== 'active' && (
             <div className="pt-1">
               <label className="block text-xs font-medium text-gray-600 mb-1">Reason (optional)</label>
-              <input value={reason} onChange={e => setReason(e.target.value)} placeholder="e.g. Violation of terms" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-400" />
+              <input value={reason} onChange={e => setReason(e.target.value)} placeholder="e.g. Violation of terms" className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary" />
             </div>
           )}
           {error && <p className="text-red-600 text-sm bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>}
         </div>
         <div className="flex gap-3 mt-5">
           <button onClick={onClose} className="flex-1 border border-gray-200 text-gray-600 py-2 rounded-lg text-sm hover:bg-gray-50 transition-colors">Cancel</button>
-          <button onClick={handleSave} disabled={loading} className="flex-1 bg-green-500 hover:bg-green-600 disabled:opacity-60 text-white py-2 rounded-lg text-sm font-semibold transition-colors">{loading ? 'Saving…' : 'Save'}</button>
+          <button onClick={handleSave} disabled={loading} className="flex-1 bg-primary hover:bg-primary/90 disabled:opacity-60 text-white py-2 rounded-lg text-sm font-semibold transition-colors">{loading ? 'Saving…' : 'Save'}</button>
         </div>
       </div>
     </div>
@@ -131,8 +131,8 @@ export default function Users() {
           <p className="text-sm text-gray-400 mt-0.5">{users.length} registered user{users.length !== 1 ? 's' : ''}</p>
         </div>
         <div className="flex gap-2 flex-wrap">
-          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search email or name…" className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-400 w-52" />
-          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-green-400">
+          <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Search email or name…" className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary w-52" />
+          <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary">
             <option value="all">All statuses</option>
             <option value="active">Active</option>
             <option value="banned">Banned</option>
@@ -146,7 +146,7 @@ export default function Users() {
           <tr key={u.id} className="hover:bg-gray-50 transition-colors">
             <Td>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold shrink-0">{u.email[0].toUpperCase()}</div>
+                <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold shrink-0">{u.email[0].toUpperCase()}</div>
                 <div>
                   <p className="font-medium text-gray-800 text-sm">{u.display_name || '—'}</p>
                   <p className="text-gray-400 text-xs">{u.email}</p>
@@ -157,7 +157,7 @@ export default function Users() {
             <Td><Badge status={u.status || 'active'} /></Td>
             <Td>
               {u.email_verified
-                ? <span className="inline-flex items-center gap-1 text-green-600 text-xs font-medium"><span>✓</span> Verified</span>
+                ? <span className="inline-flex items-center gap-1 text-primary text-xs font-medium"><span>✓</span> Verified</span>
                 : <span className="text-gray-400 text-xs">Unverified</span>
               }
             </Td>

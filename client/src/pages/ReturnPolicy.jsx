@@ -26,7 +26,7 @@ export default function ReturnPolicy() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">3. How to Request a Refund</h2>
           <p>
-            To request a refund, contact us at <a href="mailto:support@devmarket.com" className="text-green-600 hover:underline">support@devmarket.com</a> within <strong>7 days</strong> of your purchase date. Please include:
+            To request a refund, contact us at <a href="mailto:support@devmarket.com" className="text-primary hover:underline">support@devmarket.com</a> within <strong>7 days</strong> of your purchase date. Please include:
           </p>
           <ul className="list-disc pl-5 mt-2 space-y-1">
             <li>Your order ID</li>
@@ -56,7 +56,7 @@ export default function ReturnPolicy() {
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-2">6. Contact</h2>
           <p>
-            For any questions about our return policy, reach out to <a href="mailto:support@devmarket.com" className="text-green-600 hover:underline">support@devmarket.com</a>.
+            For any questions about our return policy, reach out to <a href="mailto:support@devmarket.com" className="text-primary hover:underline">support@devmarket.com</a>.
           </p>
         </section>
 

@@ -71,7 +71,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4">
             Premium Digital Assets<br />
-            <span className="text-green-400">for Every Project</span>
+            <span className="text-primary/80">for Every Project</span>
           </h1>
           <p className="text-gray-400 text-base sm:text-lg mb-8">
             Discover thousands of themes, plugins, scripts and source code made by world-class developers.
@@ -82,10 +82,10 @@ export default function Home() {
               placeholder="e.g. responsive WordPress theme..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 px-5 py-3 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="flex-1 px-5 py-3 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
             />
             <button type="submit"
-              className="bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">
+              className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">
               Search
             </button>
           </form>
@@ -100,11 +100,11 @@ export default function Home() {
             <div className={`grid gap-4 ${categories.length <= 2 ? 'grid-cols-2' : categories.length === 3 ? 'grid-cols-3' : 'grid-cols-2 md:grid-cols-4'}`}>
               {categories.map((cat) => (
                 <button key={cat.id} onClick={() => setCategory(cat.slug)}
-                  className="bg-white border border-gray-100 rounded-xl p-5 text-left shadow-sm hover:shadow-md hover:border-green-300 transition-all group">
-                  <div className="w-10 h-10 bg-green-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-green-100 transition-colors">
-                    <CategoryIcon className="w-5 h-5 text-green-600" />
+                  className="bg-white border border-gray-100 rounded-xl p-5 text-left shadow-sm hover:shadow-md hover:border-primary/40 transition-all group">
+                  <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
+                    <CategoryIcon className="w-5 h-5 text-primary" />
                   </div>
-                  <p className="font-semibold text-gray-800 group-hover:text-green-600 capitalize">{cat.name}</p>
+                  <p className="font-semibold text-gray-800 group-hover:text-primary capitalize">{cat.name}</p>
                   <p className="text-xs text-gray-400 mt-0.5 font-mono">{cat.slug}</p>
                 </button>
               ))}
@@ -117,9 +117,9 @@ export default function Home() {
           <div className="flex items-center gap-3 mb-6">
             <span className="text-sm text-gray-500">Showing results for:</span>
             {activeCategory && (
-              <span className="bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 capitalize">
+              <span className="bg-blue-100 text-primary text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 capitalize">
                 {activeCategoryName}
-                <button onClick={() => setCategory('')} className="ml-1 hover:text-green-900">✕</button>
+                <button onClick={() => setCategory('')} className="ml-1 hover:text-primary">✕</button>
               </span>
             )}
             {searchParams.get('search') && (
@@ -150,7 +150,7 @@ export default function Home() {
                     {categories.slice(0, 5).map(cat => (
                       <li key={cat.id}>
                         <button onClick={() => setCategory(cat.slug)}
-                          className="text-sm text-gray-600 hover:text-green-600 flex items-center gap-2 transition-colors capitalize">
+                          className="text-sm text-gray-600 hover:text-primary flex items-center gap-2 transition-colors capitalize">
                           <svg xmlns="http://www.w3.org/2000/svg" className="w-3.5 h-3.5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                           </svg>
@@ -163,7 +163,7 @@ export default function Home() {
               </div>
               {categories.length > 0 && (
                 <button onClick={() => setCategory(categories[0].slug)}
-                  className="mt-6 bg-green-500 hover:bg-green-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors w-fit">
+                  className="mt-6 bg-primary hover:bg-primary/90 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors w-fit">
                   View more bestsellers
                 </button>
               )}
@@ -180,7 +180,7 @@ export default function Home() {
                   </svg>
                 </div>
                 <p className="text-lg font-medium text-gray-500">No products found</p>
-                <button onClick={() => setSearchParams({})} className="mt-4 text-green-600 hover:underline text-sm">
+                <button onClick={() => setSearchParams({})} className="mt-4 text-primary hover:underline text-sm">
                   Clear filters
                 </button>
               </div>

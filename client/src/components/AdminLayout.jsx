@@ -75,7 +75,7 @@ function Sidebar({ open, onClose }) {
         {/* Brand */}
         <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2" onClick={onClose}>
-            <span className="bg-green-500 text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
+            <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
             <div>
               <p className="text-white font-bold text-sm leading-tight">devmarket</p>
               <p className="text-gray-500 text-[10px] uppercase tracking-wider">Admin</p>
@@ -96,7 +96,7 @@ function Sidebar({ open, onClose }) {
             return (
               <Link key={to} to={to} onClick={onClose}
                 className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all
-                  ${active ? 'bg-green-500 text-white' : 'text-gray-400 hover:text-white hover:bg-white/10'}`}>
+                  ${active ? 'bg-primary text-white' : 'text-gray-400 hover:text-white hover:bg-white/10'}`}>
                 {icon}
                 <span className="flex-1">{label}</span>
                 {to === '/admin/support' && openTickets > 0 && (
@@ -119,7 +119,7 @@ function Sidebar({ open, onClose }) {
             View Store
           </Link>
           <div className="flex items-center gap-3 px-3 py-2">
-            <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center text-white text-xs font-bold shrink-0">
+            <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold shrink-0">
               {initials}
             </div>
             <p className="text-gray-400 text-xs truncate flex-1">{user?.email}</p>

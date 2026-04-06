@@ -36,7 +36,7 @@ import Support from './pages/Support';
 
 function PublicLayout({ children }) {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col">
+    <div className="min-h-screen bg-white flex flex-col" style={{ color: '#181818' }}>
       <Navbar />
       <AuthModal />
       <div className="flex-1 px-4 pt-[52px] sm:pt-[88px]">{children}</div>
