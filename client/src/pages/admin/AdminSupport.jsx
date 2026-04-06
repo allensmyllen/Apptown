@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import api from '../../services/api';
 import AdminLayout from '../../components/AdminLayout';
 import { AdminTable, Td, Badge } from '../../components/AdminTable';
-import { useTicketSocket } from '../../hooks/useSocket';
+import { useTicketSocket, emitTyping } from '../../hooks/useSocket';
+import { MessageBubble, TypingIndicator } from '../../components/MessageBubble';
 
 const STATUS_TABS = [
   { label: 'All', value: 'all' },
@@ -36,18 +37,25 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
   const [sending, setSending] = useState(false);
   const [closing, setClosing] = useState(false);
   const [ticketStatus, setTicketStatus] = useState(ticket.status);
+  const [typingRole, setTypingRole] = useState(null);
+  const typingTimeout = useRef(null);
   const bottomRef = useRef(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => { fetchMessages(); }, [ticket.id]);
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, typingRole]);
 
-  // Real-time: receive new messages via WebSocket
+  // Real-time: receive new messages + typing via WebSocket
   useTicketSocket(ticket.id, (msg) => {
     setMessages(prev => {
       if (prev.some(m => m.id === msg.id)) return prev;
       return [...prev, msg];
     });
+    setTypingRole(null);
+  }, ({ role }) => {
+    setTypingRole(role);
+    if (typingTimeout.current) clearTimeout(typingTimeout.current);
+    typingTimeout.current = setTimeout(() => setTypingRole(null), 3000);
   });
 
   async function fetchMessages() {
@@ -69,7 +77,7 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
       const res = await api.post(`/admin/support-tickets/${ticket.id}/messages`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setMessages(prev => [...prev, res.data.message]);
+      setMessages(prev => prev.some(m => m.id === res.data.message.id) ? prev : [...prev, res.data.message]);
       setMsgInput('');
       setAttachFile(null);
     } catch { /* silently fail */ }
@@ -127,16 +135,9 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
           ) : messages.length === 0 ? (
             <p className="text-center text-gray-400 text-sm py-8">No messages yet.</p>
           ) : messages.map(msg => (
-            <div key={msg.id} className={`flex flex-col gap-0.5 ${msg.sender_role === 'admin' ? 'items-end' : 'items-start'}`}>
-              <div className={`max-w-[75%] px-4 py-2.5 rounded-2xl text-sm leading-relaxed ${
-                msg.sender_role === 'admin' ? 'bg-primary text-white rounded-br-sm' : 'bg-gray-100 text-gray-800 rounded-bl-sm'
-              }`}>
-                {msg.body && <p>{msg.body}</p>}
-                <FileAttachment url={msg.file_url} />
-              </div>
-              <p className="text-[11px] text-gray-400 px-1">{msg.sender_name} · {formatTime(msg.created_at)}</p>
-            </div>
+            <MessageBubble key={msg.id} msg={msg} formatTime={formatTime} />
           ))}
+          <TypingIndicator role={typingRole === 'user' ? 'user' : null} />
           <div ref={bottomRef} />
         </div>
 
@@ -153,7 +154,7 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
               </div>
             )}
             <div className="flex gap-2">
-              <input type="text" value={msgInput} onChange={e => setMsgInput(e.target.value)}
+              <input type="text" value={msgInput} onChange={e => { setMsgInput(e.target.value); emitTyping(ticket.id, 'admin'); }}
                 onKeyDown={e => e.key === 'Enter' && !e.shiftKey && handleSend()}
                 placeholder="Type a reply…"
                 className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />

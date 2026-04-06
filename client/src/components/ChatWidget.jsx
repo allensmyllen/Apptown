@@ -2,8 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
-import { useTicketSocket } from '../hooks/useSocket';
+import { useTicketSocket, emitTyping } from '../hooks/useSocket';
 import { playNotificationSound } from '../hooks/useNotificationSound';
+import { MessageBubble, TypingIndicator } from './MessageBubble';
 
 const PRIMARY = '#3781EE';
 
@@ -17,6 +18,8 @@ export default function ChatWidget() {
   const [loadingMsgs, setLoadingMsgs] = useState(false);
   const [replyBody, setReplyBody] = useState('');
   const [sending, setSending] = useState(false);
+  const [typingRole, setTypingRole] = useState(null);
+  const typingTimeout = useRef(null);
   const bottomRef = useRef(null);
 
   // Only for logged-in non-admin users
@@ -25,11 +28,15 @@ export default function ChatWidget() {
   // Real-time messages via WebSocket
   useTicketSocket(selectedTicket?.id, (msg) => {
     setMessages(prev => prev.some(m => m.id === msg.id) ? prev : [...prev, msg]);
+    setTypingRole(null);
     fetchTickets();
-    // Play sound only for incoming admin messages
     if (msg.sender_role === 'admin') {
       playNotificationSound();
     }
+  }, ({ role }) => {
+    setTypingRole(role);
+    if (typingTimeout.current) clearTimeout(typingTimeout.current);
+    typingTimeout.current = setTimeout(() => setTypingRole(null), 3000);
   });
 
   useEffect(() => {
@@ -171,27 +178,21 @@ export default function ChatWidget() {
                 ) : messages.length === 0 ? (
                   <p className="text-center text-xs text-gray-400 py-4">No messages yet.</p>
                 ) : messages.map(msg => (
-                  <div key={msg.id} className={`flex flex-col gap-0.5 ${msg.sender_role === 'user' ? 'items-end' : 'items-start'}`}>
-                    <div className="max-w-[85%] px-3 py-2 rounded-xl text-xs leading-relaxed"
-                      style={msg.sender_role === 'user'
-                        ? { backgroundColor: PRIMARY, color: '#fff' }
-                        : { backgroundColor: '#f3f4f6', color: '#1f2937' }
-                      }>
-                      {msg.body}
-                    </div>
-                    <p className="text-[10px] text-gray-400 px-1">
-                      {msg.sender_role === 'admin' ? 'Support' : 'You'} · {formatTime(msg.created_at)}
-                    </p>
-                  </div>
+                  <MessageBubble key={msg.id} msg={msg} formatTime={formatTime} />
                 ))}
+                <TypingIndicator role={typingRole === 'admin' ? 'admin' : null} />
                 <div ref={bottomRef} />
               </div>
 
               {selectedTicket.status === 'open' ? (
                 <form onSubmit={handleSend} className="px-3 py-2 border-t border-gray-100 flex gap-2">
-                  <input type="text" value={replyBody} onChange={e => setReplyBody(e.target.value)}
+                  <input
+                    type="text"
+                    value={replyBody}
+                    onChange={e => { setReplyBody(e.target.value); if (selectedTicket) emitTyping(selectedTicket.id, 'user'); }}
                     placeholder="Type a message…"
-                    className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-xs focus:outline-none" />
+                    className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-xs focus:outline-none"
+                  />
                   <button type="submit" disabled={sending || !replyBody.trim()}
                     style={{ backgroundColor: PRIMARY }}
                     className="text-white text-xs font-semibold px-3 py-1.5 rounded-lg disabled:opacity-50 hover:opacity-90 transition-opacity">

@@ -28,6 +28,11 @@ io.on('connection', (socket) => {
   socket.on('leave_ticket', (ticketId) => {
     socket.leave(`ticket:${ticketId}`);
   });
+
+  // Broadcast typing indicator to others in the same ticket room
+  socket.on('typing', ({ ticketId, role }) => {
+    socket.to(`ticket:${ticketId}`).emit('typing', { role });
+  });
 });
 
 migrate()

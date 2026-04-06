@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
-import { useTicketSocket } from '../hooks/useSocket';
+import { useTicketSocket, emitTyping } from '../hooks/useSocket';
 import { playNotificationSound } from '../hooks/useNotificationSound';
+import { MessageBubble, TypingIndicator } from '../components/MessageBubble';
 
 const PRIMARY = '#3781EE';
 
@@ -23,19 +24,26 @@ export default function HelpCenterTab() {
   const [replyBody, setReplyBody] = useState('');
   const [sendingReply, setSendingReply] = useState(false);
   const [replyError, setReplyError] = useState('');
-  const pollRef = useRef(null);
+  const [typingRole, setTypingRole] = useState(null);
+  const typingTimeout = useRef(null);
+  const bottomRef = useRef(null);
 
   useEffect(() => { fetchTickets(); }, []);
-  useEffect(() => { return () => { if (pollRef.current) clearInterval(pollRef.current); }; }, []);
 
-  // Real-time: receive new messages via WebSocket
+  // Scroll to bottom on new messages
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages, typingRole]);
+
+  // Real-time: receive new messages + typing via WebSocket
   useTicketSocket(selectedTicket?.id, (msg) => {
-    setMessages(prev => {
-      if (prev.some(m => m.id === msg.id)) return prev; // dedupe
-      return [...prev, msg];
-    });
-    fetchTickets(); // refresh unread count
+    setMessages(prev => prev.some(m => m.id === msg.id) ? prev : [...prev, msg]);
+    setTypingRole(null);
+    fetchTickets();
     if (msg.sender_role === 'admin') playNotificationSound();
+  }, ({ role }) => {
+    // Show typing indicator, auto-clear after 3s
+    setTypingRole(role);
+    if (typingTimeout.current) clearTimeout(typingTimeout.current);
+    typingTimeout.current = setTimeout(() => setTypingRole(null), 3000);
   });
 
   async function fetchTickets() {
@@ -77,15 +85,17 @@ export default function HelpCenterTab() {
   }
 
   async function handleTicketClick(ticket) {
-    if (selectedTicket?.id === ticket.id) {
-      setSelectedTicket(null); setMessages([]);
-      return;
-    }
+    if (selectedTicket?.id === ticket.id) { setSelectedTicket(null); setMessages([]); return; }
     setSelectedTicket(ticket); setReplyBody(''); setReplyError(''); setMessagesLoading(true);
     try {
       const res = await api.get(`/support-tickets/${ticket.id}/messages`);
       setMessages(res.data.messages || []);
     } catch { setMessages([]); } finally { setMessagesLoading(false); }
+  }
+
+  function handleReplyChange(e) {
+    setReplyBody(e.target.value);
+    if (selectedTicket) emitTyping(selectedTicket.id, 'user');
   }
 
   async function handleSendReply(e) {
@@ -95,7 +105,8 @@ export default function HelpCenterTab() {
     setSendingReply(true);
     try {
       const res = await api.post(`/support-tickets/${selectedTicket.id}/messages`, { body: replyBody.trim() });
-      setMessages(prev => [...prev, res.data.message]); setReplyBody('');
+      setMessages(prev => prev.some(m => m.id === res.data.message.id) ? prev : [...prev, res.data.message]);
+      setReplyBody('');
     } catch (err) { setReplyError(err.response?.data?.error || 'Failed to send message.'); }
     finally { setSendingReply(false); }
   }
@@ -201,26 +212,19 @@ export default function HelpCenterTab() {
                       <div className="flex items-center justify-center py-4">
                         <div className="w-4 h-4 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: PRIMARY, borderTopColor: 'transparent' }} />
                       </div>
-                    ) : messages.length === 0 ? (
-                      <p className="text-xs text-gray-400 py-2">No messages yet.</p>
                     ) : (
                       <div className="space-y-2 py-2">
-                        {messages.map(msg => (
-                          <div key={msg.id} className={`flex flex-col ${msg.sender_role === 'user' ? 'items-end' : 'items-start'}`}>
-                            <div className="max-w-[80%] rounded-xl px-3 py-2 text-sm"
-                              style={msg.sender_role === 'user' ? { backgroundColor: PRIMARY, color: '#fff' } : { backgroundColor: '#f3f4f6', color: '#1f2937' }}>
-                              {msg.body}
-                            </div>
-                            <p className="text-xs text-gray-400 mt-0.5">{msg.sender_name} · {new Date(msg.created_at).toLocaleString()}</p>
-                          </div>
-                        ))}
+                        {messages.length === 0 && <p className="text-xs text-gray-400">No messages yet.</p>}
+                        {messages.map(msg => <MessageBubble key={msg.id} msg={msg} />)}
+                        <TypingIndicator role={typingRole === 'admin' ? 'admin' : null} />
+                        <div ref={bottomRef} />
                       </div>
                     )}
                     {ticket.status === 'closed' ? (
                       <p className="text-xs text-gray-400 italic py-1">This ticket is closed.</p>
                     ) : (
                       <form onSubmit={handleSendReply} className="flex gap-2 pb-2">
-                        <input type="text" value={replyBody} onChange={e => setReplyBody(e.target.value)}
+                        <input type="text" value={replyBody} onChange={handleReplyChange}
                           placeholder="Type a message…"
                           className="flex-1 border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:outline-none" />
                         <button type="submit" disabled={sendingReply} style={{ backgroundColor: PRIMARY }}
