@@ -79,7 +79,7 @@ export default function UserDashboard() {
     Promise.all([
       api.get('/orders'),
       api.get('/licenses'),
-      api.get('/support-licenses').catch(() => ({ data: { licenses: [] } })),
+      api.get('/support-licenses'),
     ]).then(([ordersRes, licensesRes, supportRes]) => {
       setOrders(ordersRes.data.orders || []);
       const map = {};
@@ -87,7 +87,10 @@ export default function UserDashboard() {
       setLicenses(map);
       setSupportLicenses(supportRes.data.licenses || []);
       setLoading(false);
-    }).catch(() => setLoading(false));
+    }).catch((err) => {
+      console.error('[UserDashboard] data load error:', err);
+      setLoading(false);
+    });
   }, []);
 
   function switchTab(key) {
