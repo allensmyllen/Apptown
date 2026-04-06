@@ -111,7 +111,7 @@ export default function MessageInbox() {
         </svg>
         {unread > 0 && (
           <span
-            style={{ backgroundColor: PRIMARY }}
+            style={{ backgroundColor: '#ef4444' }}
             className="absolute -top-0.5 -right-0.5 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center leading-none"
           >
             {unread > 9 ? '9+' : unread}
