@@ -10,7 +10,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#0D0D1A] text-gray-400 mt-16">
+    <footer style={{ backgroundColor: '#0D0D1A' }} className="text-gray-400 mt-16">
       {/* Main footer columns */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
@@ -18,7 +18,7 @@ export default function Footer() {
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
-              <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
+              <span style={{ backgroundColor: '#3781EE' }} className="text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
               <span className="text-white font-bold text-base">App Town</span>
             </Link>
             <p className="text-xs text-gray-500 leading-relaxed">

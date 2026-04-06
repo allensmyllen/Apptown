@@ -76,11 +76,11 @@ export default function Home() {
         }}
       >
         {/* Dark overlay */}
-        <div className="absolute inset-0 bg-[#0D0D1A]/80" />
+        <div className="absolute inset-0" style={{ backgroundColor: 'rgba(13,13,26,0.82)' }} />
         <div className="relative max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 text-white">
             Premium Digital Assets<br />
-            <span className="text-primary">for Every Project</span>
+            <span style={{ color: '#3781EE' }}>for Every Project</span>
           </h1>
           <p className="text-gray-300 text-base sm:text-lg mb-8">
             Discover thousands of themes, plugins, scripts and source code made by world-class developers.
@@ -91,10 +91,12 @@ export default function Home() {
               placeholder="e.g. responsive WordPress theme..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="flex-1 px-5 py-3 rounded-lg text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="flex-1 px-5 py-3 rounded-lg text-gray-900 text-sm focus:outline-none"
+              style={{ outline: 'none' }}
             />
             <button type="submit"
-              className="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors">
+              style={{ backgroundColor: '#3781EE' }}
+              className="text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors hover:opacity-90">
               Search
             </button>
           </form>
