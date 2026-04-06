@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
 import UserSidebar from './components/UserSidebar';
+import ChatWidget from './components/ChatWidget';
 import { usePageTracking } from './hooks/usePageTracking';
 import { useAuth } from './hooks/useAuth';
 
@@ -48,6 +49,7 @@ function PublicLayout({ children }) {
         {children}
       </div>
       <Footer />
+      <ChatWidget />
     </div>
   );
 }
@@ -62,6 +64,7 @@ function DashboardLayout({ children }) {
         {children}
       </div>
       <Footer />
+      <ChatWidget />
     </div>
   );
 }
