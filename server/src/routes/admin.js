@@ -284,7 +284,7 @@ router.post('/support-tickets/:id/messages', handleUpload, async (req, res, next
 
     // Fetch with sender_name joined so frontend can display it
     const fullMsg = await db.query(
-      `SELECT tm.id, tm.sender_role, tm.body, tm.file_url, tm.created_at, u.name AS sender_name
+      `SELECT tm.id, tm.sender_role, tm.body, tm.file_url, tm.created_at, COALESCE(u.display_name, u.email) AS sender_name
        FROM ticket_messages tm JOIN users u ON u.id = tm.sender_id
        WHERE tm.id = $1`,
       [msgResult.rows[0].id]

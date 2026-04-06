@@ -111,7 +111,7 @@ router.get('/:id/messages', authenticate, async (req, res, next) => {
     }
 
     const messagesResult = await db.query(
-      `SELECT tm.id, tm.sender_role, tm.body, tm.file_url, tm.created_at, u.name AS sender_name
+      `SELECT tm.id, tm.sender_role, tm.body, tm.file_url, tm.created_at, COALESCE(u.display_name, u.email) AS sender_name
        FROM ticket_messages tm
        JOIN users u ON u.id = tm.sender_id
        WHERE tm.ticket_id = $1
