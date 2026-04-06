@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
 import { AuthModalProvider } from './hooks/useAuthModal';
 import { CartProvider } from './hooks/useCart';
@@ -37,7 +37,8 @@ import Support from './pages/Support';
 
 function PublicLayout({ children }) {
   const { user } = useAuth();
-  const hasUserSidebar = user && user.role !== 'admin';
+  const { pathname } = useLocation();
+  const hasUserSidebar = user && user.role !== 'admin' && pathname.startsWith('/support');
   return (
     <div className="min-h-screen bg-white flex flex-col" style={{ color: '#181818' }}>
       <Navbar />

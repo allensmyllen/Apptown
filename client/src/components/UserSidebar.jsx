@@ -4,8 +4,8 @@ import { useAuth } from '../hooks/useAuth';
 const PRIMARY = '#3781EE';
 const NAV_BG  = '#0D0D1A';
 
-// Hide sidebar on dashboard pages (they have their own layout)
-const HIDDEN_PATHS = ['/downloads', '/profile', '/my-downloads'];
+// Only show sidebar on these user account pages
+const SHOW_PATHS = ['/support'];
 
 const navItems = [
   {
@@ -38,9 +38,9 @@ export default function UserSidebar() {
   const { user } = useAuth();
   const { pathname } = useLocation();
 
-  // Only show for logged-in non-admin users, and not on dashboard pages
+  // Only show for logged-in non-admin users, and only on account pages
   if (!user || user.role === 'admin') return null;
-  if (HIDDEN_PATHS.some(p => pathname.startsWith(p))) return null;
+  if (!SHOW_PATHS.some(p => pathname.startsWith(p))) return null;
 
   const initials = user.email?.[0]?.toUpperCase() || '?';
   const displayName = user.email?.split('@')[0] || '';
