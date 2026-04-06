@@ -127,12 +127,11 @@ export default function UserDashboard() {
     : null;
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#f8f9fa' }}>
+    <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
 
       {/* ── Full-width profile banner ──────────────────────────────────── */}
       <div style={{ backgroundColor: '#0D0D1A' }}>
         <div className="max-w-5xl mx-auto px-6 sm:px-8">
-
           {/* Avatar + name row */}
           <div className="flex items-center gap-5 pt-8 pb-5">
             <div
@@ -145,7 +144,6 @@ export default function UserDashboard() {
               <h1 className="text-white text-xl font-bold capitalize truncate">{displayName}</h1>
               {joinDate && <p className="text-gray-400 text-sm mt-0.5">Member since {joinDate}</p>}
             </div>
-            {/* Stats */}
             <div className="hidden sm:flex items-center gap-10 shrink-0 pr-4">
               <div className="text-center">
                 <p className="text-white text-2xl font-bold">{orders.length}</p>
@@ -157,8 +155,12 @@ export default function UserDashboard() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
 
-          {/* Tab bar — flush to bottom of banner */}
+      {/* ── Tab bar — separate light blue band ────────────────────────── */}
+      <div style={{ backgroundColor: '#EBF2FD' }}>
+        <div className="max-w-5xl mx-auto px-6 sm:px-8">
           <div className="flex gap-0 overflow-x-auto">
             {TABS.map(({ key, label }) => {
               const active = tab === key;
@@ -166,14 +168,14 @@ export default function UserDashboard() {
                 <button
                   key={key}
                   onClick={() => switchTab(key)}
-                  style={active ? { borderBottomColor: PRIMARY, color: '#fff' } : {}}
+                  style={active ? { borderBottomColor: PRIMARY, color: PRIMARY } : {}}
                   className={`px-5 py-3.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                    active ? '' : 'border-transparent text-gray-400 hover:text-gray-200'
+                    active ? '' : 'border-transparent text-gray-500 hover:text-gray-800'
                   }`}
                 >
                   {label}
                   {key === 'downloads' && orders.length > 0 && (
-                    <span className="ml-2 text-xs bg-white/10 text-gray-300 px-1.5 py-0.5 rounded-full">{orders.length}</span>
+                    <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full" style={{ backgroundColor: active ? PRIMARY : '#d1e3fa', color: active ? '#fff' : PRIMARY }}>{orders.length}</span>
                   )}
                 </button>
               );
