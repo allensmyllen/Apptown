@@ -20,7 +20,7 @@ function PageTracker() {
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
 import Checkout from './pages/Checkout';
-import MyDownloads from './pages/MyDownloads';
+import UserDashboard from './pages/UserDashboard';
 import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/admin/Dashboard';
 import Products from './pages/admin/Products';
@@ -33,7 +33,6 @@ import TermsOfUse from './pages/TermsOfUse';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import ReturnPolicy from './pages/ReturnPolicy';
 import LicenseUse from './pages/LicenseUse';
-import Profile from './pages/Profile';
 import Support from './pages/Support';
 
 function PublicLayout({ children }) {
@@ -68,9 +67,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
               <Route path="/checkout" element={<PublicLayout><Checkout /></PublicLayout>} />
               <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
-              <Route path="/downloads" element={<PublicLayout><ProtectedRoute><MyDownloads /></ProtectedRoute></PublicLayout>} />
+              <Route path="/downloads" element={<PublicLayout><ProtectedRoute><UserDashboard /></ProtectedRoute></PublicLayout>} />
               <Route path="/my-downloads" element={<Navigate to="/downloads" replace />} />
-              <Route path="/profile" element={<PublicLayout><ProtectedRoute><Profile /></ProtectedRoute></PublicLayout>} />
+              <Route path="/profile" element={<PublicLayout><ProtectedRoute><UserDashboard /></ProtectedRoute></PublicLayout>} />
               <Route path="/terms-of-use" element={<PublicLayout><TermsOfUse /></PublicLayout>} />
               <Route path="/privacy-policy" element={<PublicLayout><PrivacyPolicy /></PublicLayout>} />
               <Route path="/return-policy" element={<PublicLayout><ReturnPolicy /></PublicLayout>} />

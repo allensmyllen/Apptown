@@ -6,25 +6,28 @@ const NAV_BG  = '#0D0D1A';
 
 const navItems = [
   {
-    to: '/downloads',
+    to: '/downloads?tab=downloads',
     label: 'My Downloads',
     icon: 'M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4',
+    match: '/downloads',
   },
   {
-    to: '/profile',
+    to: '/profile?tab=profile',
     label: 'Profile Settings',
     icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z',
+    match: '/profile',
   },
   {
     to: '/profile?tab=password',
     label: 'Change Password',
     icon: 'M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z',
-    exact: false,
+    match: '/profile',
   },
   {
     to: '/support',
     label: 'Help Center',
     icon: 'M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z',
+    match: '/support',
   },
 ];
 
@@ -61,9 +64,8 @@ export default function UserSidebar() {
 
       {/* Nav links */}
       <nav className="flex-1 px-3 py-4 space-y-1">
-        {navItems.map(({ to, label, icon }) => {
-          const basePath = to.split('?')[0];
-          const isActive = pathname === basePath;
+        {navItems.map(({ to, label, icon, match }) => {
+          const isActive = pathname === (match || to.split('?')[0]);
           return (
             <Link
               key={to}
