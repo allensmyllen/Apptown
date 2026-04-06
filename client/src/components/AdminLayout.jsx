@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
+import Logo from './Logo';
 
 const NAV = [
   {
@@ -75,11 +76,8 @@ function Sidebar({ open, onClose }) {
         {/* Brand */}
         <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2" onClick={onClose}>
-            <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
-            <div>
-              <p className="text-white font-bold text-sm leading-tight">devmarket</p>
-              <p className="text-gray-500 text-[10px] uppercase tracking-wider">Admin</p>
-            </div>
+            <Logo size={28} />
+            <p className="text-gray-500 text-[10px] uppercase tracking-wider ml-1">Admin</p>
           </Link>
           {/* Close button — mobile only */}
           <button onClick={onClose} className="lg:hidden text-gray-400 hover:text-white p-1">
@@ -153,7 +151,7 @@ export default function AdminLayout({ children }) {
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <span className="text-white font-bold text-sm">devmarket Admin</span>
+          <span className="text-white font-bold text-sm">App Town Admin</span>
         </div>
 
         <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 pt-4 lg:pt-6">
