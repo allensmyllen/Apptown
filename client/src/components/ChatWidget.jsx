@@ -84,8 +84,8 @@ export default function ChatWidget() {
       {/* Chat panel */}
       {open && (
         <div
-          className="fixed bottom-20 right-5 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex flex-col overflow-hidden"
-          style={{ maxHeight: '480px' }}
+          className="fixed bottom-24 right-6 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 flex flex-col overflow-hidden"
+          style={{ height: '600px', width: '400px' }}
         >
           {/* Header */}
           <div style={{ backgroundColor: PRIMARY }} className="px-4 py-3 flex items-center justify-between">
@@ -158,7 +158,7 @@ export default function ChatWidget() {
           {/* Chat thread */}
           {selectedTicket && (
             <div className="flex flex-col flex-1 overflow-hidden">
-              <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ maxHeight: '300px' }}>
+              <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3" style={{ maxHeight: '460px' }}>
                 {loadingMsgs ? (
                   <div className="flex items-center justify-center py-6">
                     <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: PRIMARY, borderTopColor: 'transparent' }} />
@@ -205,7 +205,7 @@ export default function ChatWidget() {
       <button
         onClick={() => { setOpen(v => !v); setSelectedTicket(null); }}
         style={{ backgroundColor: PRIMARY }}
-        className="fixed bottom-5 right-5 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white hover:opacity-90 transition-opacity z-50"
+        className="fixed bottom-8 right-6 w-14 h-14 rounded-full shadow-lg flex items-center justify-center text-white hover:opacity-90 transition-opacity z-50"
         title="Support Chat"
       >
         {open ? (
