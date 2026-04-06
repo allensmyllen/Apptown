@@ -51,6 +51,20 @@ function PublicLayout({ children }) {
   );
 }
 
+// Dashboard layout — full width, no sidebar, no px padding (dashboard handles its own layout)
+function DashboardLayout({ children }) {
+  return (
+    <div className="min-h-screen bg-gray-50 flex flex-col" style={{ color: '#181818' }}>
+      <Navbar />
+      <AuthModal />
+      <div className="flex-1 pt-[52px] sm:pt-[88px]">
+        {children}
+      </div>
+      <Footer />
+    </div>
+  );
+}
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
@@ -67,9 +81,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
               <Route path="/checkout" element={<PublicLayout><Checkout /></PublicLayout>} />
               <Route path="/cart" element={<PublicLayout><Cart /></PublicLayout>} />
-              <Route path="/downloads" element={<PublicLayout><ProtectedRoute><UserDashboard /></ProtectedRoute></PublicLayout>} />
+              <Route path="/downloads" element={<DashboardLayout><ProtectedRoute><UserDashboard /></ProtectedRoute></DashboardLayout>} />
               <Route path="/my-downloads" element={<Navigate to="/downloads" replace />} />
-              <Route path="/profile" element={<PublicLayout><ProtectedRoute><UserDashboard /></ProtectedRoute></PublicLayout>} />
+              <Route path="/profile" element={<DashboardLayout><ProtectedRoute><UserDashboard /></ProtectedRoute></DashboardLayout>} />
               <Route path="/terms-of-use" element={<PublicLayout><TermsOfUse /></PublicLayout>} />
               <Route path="/privacy-policy" element={<PublicLayout><PrivacyPolicy /></PublicLayout>} />
               <Route path="/return-policy" element={<PublicLayout><ReturnPolicy /></PublicLayout>} />
