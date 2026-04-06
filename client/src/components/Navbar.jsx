@@ -88,14 +88,18 @@ export default function Navbar() {
                       </div>
                     </div>
                     <div className="py-1">
-                      <Link to="/downloads" onClick={() => setDropdownOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                        My Downloads
-                      </Link>
-                      <Link to="/profile" onClick={() => setDropdownOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                        Profile Settings
-                      </Link>
+                      {user.role !== 'admin' && (
+                        <>
+                          <Link to="/downloads" onClick={() => setDropdownOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                            My Downloads
+                          </Link>
+                          <Link to="/profile" onClick={() => setDropdownOpen(false)} className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                            Profile Settings
+                          </Link>
+                        </>
+                      )}
                       {user.role === 'admin' && (
                         <>
                           <div className="border-t border-gray-100 my-1" />
@@ -182,14 +186,18 @@ export default function Navbar() {
                   <p className="text-gray-400 text-xs truncate">{user.email}</p>
                 </div>
               </div>
-              <Link to="/downloads" onClick={closeSidebar} className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-                My Downloads
-              </Link>
-              <Link to="/profile" onClick={closeSidebar} className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                Profile Settings
-              </Link>
+              {user.role !== 'admin' && (
+                <>
+                  <Link to="/downloads" onClick={closeSidebar} className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                    My Downloads
+                  </Link>
+                  <Link to="/profile" onClick={closeSidebar} className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                    Profile Settings
+                  </Link>
+                </>
+              )}
               <Link to="/cart" onClick={closeSidebar} className="flex items-center gap-3 px-3 py-3 rounded-xl text-sm text-gray-300 hover:text-white hover:bg-white/10 transition-all">
                 <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                 Cart {items.length > 0 && <span style={{ backgroundColor: PRIMARY }} className="ml-auto text-white text-xs font-bold px-1.5 py-0.5 rounded-full">{items.length}</span>}
