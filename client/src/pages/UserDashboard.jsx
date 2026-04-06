@@ -131,7 +131,7 @@ export default function UserDashboard() {
 
       {/* ── Full-width profile banner ──────────────────────────────────── */}
       <div style={{ backgroundColor: '#0D0D1A' }}>
-        <div className="max-w-6xl mx-auto px-6">
+        <div className="px-6 sm:px-10">
 
           {/* Avatar + name row */}
           <div className="flex items-center gap-5 pt-8 pb-5">
@@ -146,7 +146,7 @@ export default function UserDashboard() {
               {joinDate && <p className="text-gray-400 text-sm mt-0.5">Member since {joinDate}</p>}
             </div>
             {/* Stats */}
-            <div className="hidden sm:flex items-center gap-8 shrink-0">
+            <div className="hidden sm:flex items-center gap-10 shrink-0 pr-4">
               <div className="text-center">
                 <p className="text-white text-2xl font-bold">{orders.length}</p>
                 <p className="text-gray-500 text-xs uppercase tracking-wider mt-0.5">Purchases</p>
@@ -168,9 +168,7 @@ export default function UserDashboard() {
                   onClick={() => switchTab(key)}
                   style={active ? { borderBottomColor: PRIMARY, color: '#fff' } : {}}
                   className={`px-5 py-3.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
-                    active
-                      ? 'border-blue-400'
-                      : 'border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-600'
+                    active ? '' : 'border-transparent text-gray-400 hover:text-gray-200'
                   }`}
                 >
                   {label}
@@ -185,7 +183,7 @@ export default function UserDashboard() {
       </div>
 
       {/* ── Tab content ───────────────────────────────────────────────── */}
-      <div className="max-w-6xl mx-auto px-6 py-8">
+      <div className="px-6 sm:px-10 py-8">
 
         {/* DOWNLOADS */}
         {tab === 'downloads' && (
