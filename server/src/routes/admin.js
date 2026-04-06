@@ -282,6 +282,14 @@ router.post('/support-tickets/:id/messages', handleUpload, async (req, res, next
       [id, req.user.sub, body.trim(), fileUrl]
     );
 
+    // Fetch with sender_name joined so frontend can display it
+    const fullMsg = await db.query(
+      `SELECT tm.id, tm.sender_role, tm.body, tm.file_url, tm.created_at, u.name AS sender_name
+       FROM ticket_messages tm JOIN users u ON u.id = tm.sender_id
+       WHERE tm.id = $1`,
+      [msgResult.rows[0].id]
+    );
+
     // Email the user
     try {
       await sendSupportMessageNotification(ticket.user_email, {
@@ -294,7 +302,7 @@ router.post('/support-tickets/:id/messages', handleUpload, async (req, res, next
       console.error('[admin-support] email error:', emailErr.message);
     }
 
-    return res.status(201).json({ message: msgResult.rows[0] });
+    return res.status(201).json({ message: fullMsg.rows[0] });
   } catch (err) {
     next(err);
   }

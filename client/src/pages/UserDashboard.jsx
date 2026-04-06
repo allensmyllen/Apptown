@@ -130,7 +130,7 @@ export default function UserDashboard() {
     <div className="min-h-screen" style={{ backgroundColor: '#ffffff' }}>
 
       {/* ── Full-width profile banner ──────────────────────────────────── */}
-      <div style={{ backgroundColor: '#0D0D1A' }}>
+      <div style={{ backgroundColor: '#EBF2FD' }}>
         <div className="max-w-5xl mx-auto px-6 sm:px-8">
           {/* Avatar + name row */}
           <div className="flex items-center gap-5 pt-8 pb-5">
@@ -141,16 +141,16 @@ export default function UserDashboard() {
               {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-white text-xl font-bold capitalize truncate">{displayName}</h1>
-              {joinDate && <p className="text-gray-400 text-sm mt-0.5">Member since {joinDate}</p>}
+              <h1 className="text-gray-900 text-xl font-bold capitalize truncate">{displayName}</h1>
+              {joinDate && <p className="text-gray-500 text-sm mt-0.5">Member since {joinDate}</p>}
             </div>
             <div className="hidden sm:flex items-center gap-10 shrink-0 pr-4">
               <div className="text-center">
-                <p className="text-white text-2xl font-bold">{orders.length}</p>
+                <p className="text-gray-900 text-2xl font-bold">{orders.length}</p>
                 <p className="text-gray-500 text-xs uppercase tracking-wider mt-0.5">Purchases</p>
               </div>
               <div className="text-center">
-                <p className="text-white text-2xl font-bold">{supportLicenses.length}</p>
+                <p className="text-gray-900 text-2xl font-bold">{supportLicenses.length}</p>
                 <p className="text-gray-500 text-xs uppercase tracking-wider mt-0.5">Support Licenses</p>
               </div>
             </div>

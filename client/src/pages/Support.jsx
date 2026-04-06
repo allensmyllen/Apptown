@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
@@ -33,6 +33,7 @@ export default function Support() {
   const [sendingReply, setSendingReply] = useState(false);
   const [replyError, setReplyError] = useState('');
   const [replyFile, setReplyFile] = useState(null);
+  const pollRef = useRef(null);
 
   // On mount, check if we're returning from a Paystack payment
   useEffect(() => {
@@ -121,12 +122,15 @@ export default function Support() {
     if (selectedTicket?.id === ticket.id) {
       setSelectedTicket(null);
       setMessages([]);
+      if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
       return;
     }
     setSelectedTicket(ticket);
     setReplyBody('');
     setReplyError('');
     setMessagesLoading(true);
+    // Clear any existing poll
+    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
     try {
       const res = await api.get(`/support-tickets/${ticket.id}/messages`);
       setMessages(res.data.messages || []);
@@ -135,7 +139,21 @@ export default function Support() {
     } finally {
       setMessagesLoading(false);
     }
+    // Poll every 5s for new messages (so admin replies appear automatically)
+    if (ticket.status === 'open') {
+      pollRef.current = setInterval(async () => {
+        try {
+          const res = await api.get(`/support-tickets/${ticket.id}/messages`);
+          setMessages(res.data.messages || []);
+        } catch {}
+      }, 5000);
+    }
   }
+
+  // Cleanup poll on unmount
+  useEffect(() => {
+    return () => { if (pollRef.current) clearInterval(pollRef.current); };
+  }, []);
 
   async function handleSendReply(e) {
     e.preventDefault();
