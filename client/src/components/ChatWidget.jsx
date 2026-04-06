@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
 import { useTicketSocket } from '../hooks/useSocket';
+import { playNotificationSound } from '../hooks/useNotificationSound';
 
 const PRIMARY = '#3781EE';
 
@@ -25,6 +26,10 @@ export default function ChatWidget() {
   useTicketSocket(selectedTicket?.id, (msg) => {
     setMessages(prev => prev.some(m => m.id === msg.id) ? prev : [...prev, msg]);
     fetchTickets();
+    // Play sound only for incoming admin messages
+    if (msg.sender_role === 'admin') {
+      playNotificationSound();
+    }
   });
 
   useEffect(() => {

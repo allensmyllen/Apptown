@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
 import { useTicketSocket } from '../hooks/useSocket';
+import { playNotificationSound } from '../hooks/useNotificationSound';
 
 const PRIMARY = '#3781EE';
 
@@ -34,6 +35,7 @@ export default function HelpCenterTab() {
       return [...prev, msg];
     });
     fetchTickets(); // refresh unread count
+    if (msg.sender_role === 'admin') playNotificationSound();
   });
 
   async function fetchTickets() {

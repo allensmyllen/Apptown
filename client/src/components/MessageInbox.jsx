@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
 import { useTicketSocket } from '../hooks/useSocket';
+import { playNotificationSound } from '../hooks/useNotificationSound';
 
 const PRIMARY = '#3781EE';
 
@@ -30,6 +31,7 @@ export default function MessageInbox() {
       return [...prev, msg];
     });
     fetchTickets(); // refresh unread badge
+    if (msg.sender_role === 'admin') playNotificationSound();
   });
 
   // Poll tickets every 30s for unread count updates
