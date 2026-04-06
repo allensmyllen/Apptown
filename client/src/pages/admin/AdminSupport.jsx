@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import api from '../../services/api';
 import AdminLayout from '../../components/AdminLayout';
 import { AdminTable, Td, Badge } from '../../components/AdminTable';
+import { useTicketSocket } from '../../hooks/useSocket';
 
 const STATUS_TABS = [
   { label: 'All', value: 'all' },
@@ -40,6 +41,14 @@ function TicketModal({ ticket, onClose, onTicketClosed }) {
 
   useEffect(() => { fetchMessages(); }, [ticket.id]);
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
+
+  // Real-time: receive new messages via WebSocket
+  useTicketSocket(ticket.id, (msg) => {
+    setMessages(prev => {
+      if (prev.some(m => m.id === msg.id)) return prev;
+      return [...prev, msg];
+    });
+  });
 
   async function fetchMessages() {
     setLoadingMsgs(true);

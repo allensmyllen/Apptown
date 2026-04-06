@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
+import { useTicketSocket } from '../hooks/useSocket';
 
 const PRIMARY = '#3781EE';
 
@@ -22,7 +23,16 @@ export default function MessageInbox() {
   // Only show for logged-in non-admin users
   if (!user || user.role === 'admin') return null;
 
-  // Fetch tickets on mount and every 30s
+  // Real-time: receive new messages via WebSocket
+  useTicketSocket(selectedTicket?.id, (msg) => {
+    setMessages(prev => {
+      if (prev.some(m => m.id === msg.id)) return prev;
+      return [...prev, msg];
+    });
+    fetchTickets(); // refresh unread badge
+  });
+
+  // Poll tickets every 30s for unread count updates
   useEffect(() => {
     fetchTickets();
     const interval = setInterval(fetchTickets, 30000);

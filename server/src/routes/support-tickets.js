@@ -173,7 +173,21 @@ router.post('/:id/messages', authenticate, handleUpload, async (req, res, next) 
       console.error('[support] email notification error:', emailErr.message);
     }
 
-    return res.status(201).json({ message: msg });
+    // Fetch with sender_name for the response
+    const fullMsg = await db.query(
+      `SELECT tm.id, tm.sender_role, tm.body, tm.file_url, tm.created_at,
+              COALESCE(u.display_name, u.email) AS sender_name
+       FROM ticket_messages tm JOIN users u ON u.id = tm.sender_id
+       WHERE tm.id = $1`,
+      [msg.id]
+    );
+    const fullMessage = fullMsg.rows[0];
+
+    // Emit real-time event to all clients in this ticket's room
+    const io = req.app.get('io');
+    if (io) io.to(`ticket:${id}`).emit('new_message', fullMessage);
+
+    return res.status(201).json({ message: fullMessage });
   } catch (err) {
     next(err);
   }

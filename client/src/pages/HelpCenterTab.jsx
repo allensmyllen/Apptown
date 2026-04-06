@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import api from '../services/api';
+import { useTicketSocket } from '../hooks/useSocket';
 
 const PRIMARY = '#3781EE';
 
@@ -25,6 +26,15 @@ export default function HelpCenterTab() {
 
   useEffect(() => { fetchTickets(); }, []);
   useEffect(() => { return () => { if (pollRef.current) clearInterval(pollRef.current); }; }, []);
+
+  // Real-time: receive new messages via WebSocket
+  useTicketSocket(selectedTicket?.id, (msg) => {
+    setMessages(prev => {
+      if (prev.some(m => m.id === msg.id)) return prev; // dedupe
+      return [...prev, msg];
+    });
+    fetchTickets(); // refresh unread count
+  });
 
   async function fetchTickets() {
     setTicketsLoading(true);
@@ -67,20 +77,13 @@ export default function HelpCenterTab() {
   async function handleTicketClick(ticket) {
     if (selectedTicket?.id === ticket.id) {
       setSelectedTicket(null); setMessages([]);
-      if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
       return;
     }
     setSelectedTicket(ticket); setReplyBody(''); setReplyError(''); setMessagesLoading(true);
-    if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null; }
     try {
       const res = await api.get(`/support-tickets/${ticket.id}/messages`);
       setMessages(res.data.messages || []);
     } catch { setMessages([]); } finally { setMessagesLoading(false); }
-    if (ticket.status === 'open') {
-      pollRef.current = setInterval(async () => {
-        try { const res = await api.get(`/support-tickets/${ticket.id}/messages`); setMessages(res.data.messages || []); } catch {}
-      }, 5000);
-    }
   }
 
   async function handleSendReply(e) {

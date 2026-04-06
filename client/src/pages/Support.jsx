@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import api from '../services/api';
+import { useTicketSocket } from '../hooks/useSocket';
 
 export default function Support() {
   const { user } = useAuth();
@@ -149,6 +150,14 @@ export default function Support() {
       }, 5000);
     }
   }
+
+  // Real-time: receive new messages via WebSocket
+  useTicketSocket(selectedTicket?.id, (msg) => {
+    setMessages(prev => {
+      if (prev.some(m => m.id === msg.id)) return prev;
+      return [...prev, msg];
+    });
+  });
 
   // Cleanup poll on unmount
   useEffect(() => {
