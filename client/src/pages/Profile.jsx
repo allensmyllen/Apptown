@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
+import { useSearchParams } from 'react-router-dom';
 import api from '../services/api';
 // v2 — tabbed layout
 
@@ -23,7 +24,8 @@ function TabButton({ active, onClick, children }) {
 
 export default function Profile() {
   const { user } = useAuth();
-  const [tab, setTab] = useState('personal');
+  const [searchParams] = useSearchParams();
+  const [tab, setTab] = useState(searchParams.get('tab') === 'password' ? 'password' : 'personal');
   const [profile, setProfile] = useState(null);
 
   // Personal info form

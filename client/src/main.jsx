@@ -8,7 +8,9 @@ import { ProtectedRoute, AdminRoute } from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import AuthModal from './components/AuthModal';
 import Footer from './components/Footer';
+import UserSidebar from './components/UserSidebar';
 import { usePageTracking } from './hooks/usePageTracking';
+import { useAuth } from './hooks/useAuth';
 
 function PageTracker() {
   usePageTracking();
@@ -35,11 +37,16 @@ import Profile from './pages/Profile';
 import Support from './pages/Support';
 
 function PublicLayout({ children }) {
+  const { user } = useAuth();
+  const hasUserSidebar = user && user.role !== 'admin';
   return (
     <div className="min-h-screen bg-white flex flex-col" style={{ color: '#181818' }}>
       <Navbar />
       <AuthModal />
-      <div className="flex-1 px-4 pt-[52px] sm:pt-[88px]">{children}</div>
+      <UserSidebar />
+      <div className={`flex-1 px-4 pt-[52px] sm:pt-[88px] transition-all ${hasUserSidebar ? 'lg:pl-56' : ''}`}>
+        {children}
+      </div>
       <Footer />
     </div>
   );
