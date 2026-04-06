@@ -46,13 +46,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-40 bg-[#1a1a2e] text-white shadow-lg">
+      <nav className="fixed top-0 left-0 right-0 z-40 bg-[#0D0D1A] text-white shadow-lg">
         {/* Main bar */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2 text-lg font-bold tracking-tight shrink-0">
             <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
-            <span className="text-white">devmarket</span>
+            <span className="text-white">App Town</span>
           </Link>
 
           {/* Desktop right side */}
@@ -158,13 +158,13 @@ export default function Navbar() {
       />
 
       {/* Sidebar panel — slides in from right */}
-      <div className={`fixed top-0 right-0 h-full w-72 bg-[#1a1a2e] z-50 sm:hidden flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+      <div className={`fixed top-0 right-0 h-full w-72 bg-[#0D0D1A] z-50 sm:hidden flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : 'translate-x-full'}`}>
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <Link to="/" onClick={closeSidebar} className="flex items-center gap-2">
             <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
-            <span className="text-white font-bold text-sm">devmarket</span>
+            <span className="text-white font-bold text-sm">App Town</span>
           </Link>
           <button onClick={closeSidebar} className="text-gray-400 hover:text-white p-1 transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

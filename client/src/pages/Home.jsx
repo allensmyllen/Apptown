@@ -67,13 +67,22 @@ export default function Home() {
   return (
     <div className="-mx-4">
       {/* Hero */}
-      <div className="bg-gradient-to-br from-[#1a1a2e] to-[#16213e] text-white py-12 sm:py-20 px-4 sm:px-6">
-        <div className="max-w-3xl mx-auto text-center">
+      <div
+        className="relative text-white py-16 sm:py-28 px-4 sm:px-6 overflow-hidden"
+        style={{
+          backgroundImage: 'url(https://images.unsplash.com/photo-1607799279861-4dd421887fb3?w=1600&auto=format&fit=crop&q=80)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-[#0D0D1A]/80" />
+        <div className="relative max-w-3xl mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4">
             Premium Digital Assets<br />
-            <span className="text-primary/80">for Every Project</span>
+            <span className="text-primary">for Every Project</span>
           </h1>
-          <p className="text-gray-400 text-base sm:text-lg mb-8">
+          <p className="text-gray-300 text-base sm:text-lg mb-8">
             Discover thousands of themes, plugins, scripts and source code made by world-class developers.
           </p>
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 max-w-xl mx-auto">

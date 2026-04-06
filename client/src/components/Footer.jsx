@@ -10,7 +10,7 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-[#1a1a2e] text-gray-400 mt-16">
+    <footer className="bg-[#0D0D1A] text-gray-400 mt-16">
       {/* Main footer columns */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
@@ -19,7 +19,7 @@ export default function Footer() {
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4">
               <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded">⚡</span>
-              <span className="text-white font-bold text-base">devmarket</span>
+              <span className="text-white font-bold text-base">App Town</span>
             </Link>
             <p className="text-xs text-gray-500 leading-relaxed">
               The marketplace for premium digital assets built by world-class developers.
@@ -64,7 +64,7 @@ export default function Footer() {
 
           {/* Stats */}
           <div>
-            <p className="text-white text-xs font-semibold uppercase tracking-wider mb-4">devmarket</p>
+            <p className="text-white text-xs font-semibold uppercase tracking-wider mb-4">App Town</p>
             <div className="space-y-3">
               <div>
                 <p className="text-white text-lg font-bold leading-tight">Premium</p>
@@ -87,7 +87,7 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-4 text-xs text-gray-500">
-            <span>© {new Date().getFullYear()} devmarket. All rights reserved.</span>
+            <span>© {new Date().getFullYear()} Apptown by Youtech Design Agency. All rights reserved.</span>
             <Link to="/terms-of-use" className="hover:text-white transition-colors">Terms</Link>
             <Link to="/privacy-policy" className="hover:text-white transition-colors">Privacy</Link>
             <Link to="/license-use" className="hover:text-white transition-colors">Licenses</Link>
