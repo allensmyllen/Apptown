@@ -78,12 +78,12 @@ export default function Home() {
         {/* Dark overlay */}
         <div className="absolute inset-0" style={{ backgroundColor: 'rgba(13,13,26,0.82)' }} />
         <div className="relative max-w-3xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-6 text-white">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 text-white" style={{ lineHeight: '1.4' }}>
             Premium Digital Assets<br />
-            <span style={{ color: '#3781EE' }}>for Every Project</span>
+            <span style={{ color: '#78FFBF' }}>for Every Project</span>
           </h1>
           <p className="text-gray-300 text-base sm:text-lg mb-10 leading-relaxed">
-            Discover thousands of themes, plugins, scripts and source code<br className="hidden sm:block" /> made by world-class developers.
+            Discover our curated software to scale your business,<br className="hidden sm:block" /> built by the Youtech Team.
           </p>
           <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2 max-w-xl mx-auto">
             <input

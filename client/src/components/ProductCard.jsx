@@ -33,7 +33,7 @@ export default function ProductCard({ product }) {
   const reviews = parseInt(review_count || 0);
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow group">
+    <div className="bg-white rounded-lg border border-gray-200 overflow-hidden hover:shadow-xl transition-shadow group flex flex-col">
       {/* Preview image — fixed 176px height, always fills container */}
       <div className="relative w-full h-32 sm:h-44 overflow-hidden bg-gray-100">
         {image_url ? (
@@ -62,7 +62,7 @@ export default function ProductCard({ product }) {
       </div>
 
       {/* Card body */}
-      <div className="p-2 sm:p-3">
+      <div className="p-2 sm:p-3 flex flex-col flex-1">
         <Link to={`/products/${id}`}>
           <h2 className="text-sm font-semibold text-gray-800 hover:text-primary line-clamp-2 leading-snug min-h-[2.5rem]">
             {title}
@@ -79,7 +79,7 @@ export default function ProductCard({ product }) {
           </div>
         )}
 
-        <div className="mt-3 flex flex-col gap-2">
+        <div className="mt-auto pt-3 flex flex-col gap-2">
           {/* Price */}
           <span className="text-base sm:text-lg font-bold text-gray-800 truncate">
             ₦{(price_cents / 100).toLocaleString('en-NG')}

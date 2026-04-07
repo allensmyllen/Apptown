@@ -136,18 +136,23 @@ export default function UserDashboard() {
 
       {/* ── Full-width profile banner ──────────────────────────────────── */}
       <div style={{ backgroundColor: '#EBF2FD' }}>
-        <div className="max-w-5xl mx-auto px-6 sm:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8">
           {/* Avatar + name row */}
-          <div className="flex items-center gap-5 pt-8 pb-5">
+          <div className="flex items-center gap-4 pt-6 pb-4">
             <div
               style={{ backgroundColor: PRIMARY }}
-              className="w-20 h-20 rounded-xl flex items-center justify-center text-white text-3xl font-bold shrink-0 shadow-lg"
+              className="w-14 h-14 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center text-white text-2xl sm:text-3xl font-bold shrink-0 shadow-lg"
             >
               {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <h1 className="text-gray-900 text-xl font-bold capitalize truncate">{displayName}</h1>
-              {joinDate && <p className="text-gray-500 text-sm mt-0.5">Member since {joinDate}</p>}
+              <h1 className="text-gray-900 text-lg sm:text-xl font-bold capitalize truncate">{displayName}</h1>
+              {joinDate && <p className="text-gray-500 text-xs sm:text-sm mt-0.5">Member since {joinDate}</p>}
+              {/* Stats visible on mobile below name */}
+              <div className="flex items-center gap-4 mt-1 sm:hidden">
+                <span className="text-xs text-gray-500"><span className="font-bold text-gray-800">{orders.length}</span> Purchases</span>
+                <span className="text-xs text-gray-500"><span className="font-bold text-gray-800">{supportLicenses.length}</span> Support</span>
+              </div>
             </div>
             <div className="hidden sm:flex items-center gap-10 shrink-0 pr-4">
               <div className="text-center">
@@ -165,8 +170,8 @@ export default function UserDashboard() {
 
       {/* ── Tab bar — separate light blue band ────────────────────────── */}
       <div style={{ backgroundColor: '#EBF2FD' }}>
-        <div className="max-w-5xl mx-auto px-6 sm:px-8">
-          <div className="flex gap-0 overflow-x-auto">
+        <div className="max-w-5xl mx-auto px-4 sm:px-8">
+          <div className="flex gap-0 overflow-x-auto scrollbar-none -mb-px">
             {TABS.map(({ key, label }) => {
               const active = tab === key;
               return (
@@ -174,13 +179,13 @@ export default function UserDashboard() {
                   key={key}
                   onClick={() => switchTab(key)}
                   style={active ? { borderBottomColor: PRIMARY, color: PRIMARY } : {}}
-                  className={`px-5 py-3.5 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
+                  className={`px-3 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition-colors shrink-0 ${
                     active ? '' : 'border-transparent text-gray-500 hover:text-gray-800'
                   }`}
                 >
                   {label}
                   {key === 'downloads' && orders.length > 0 && (
-                    <span className="ml-2 text-xs px-1.5 py-0.5 rounded-full" style={{ backgroundColor: active ? PRIMARY : '#d1e3fa', color: active ? '#fff' : PRIMARY }}>{orders.length}</span>
+                    <span className="ml-1.5 text-xs px-1.5 py-0.5 rounded-full" style={{ backgroundColor: active ? PRIMARY : '#d1e3fa', color: active ? '#fff' : PRIMARY }}>{orders.length}</span>
                   )}
                 </button>
               );
@@ -190,7 +195,7 @@ export default function UserDashboard() {
       </div>
 
       {/* ── Tab content ───────────────────────────────────────────────── */}
-      <div className="max-w-5xl mx-auto px-6 sm:px-8 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-8 py-6 sm:py-8">
 
         {/* DOWNLOADS */}
         {tab === 'downloads' && (
@@ -212,50 +217,60 @@ export default function UserDashboard() {
           ) : (
             <div className="space-y-2">
               {orders.map(order => (
-                <div key={order.id} className="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center gap-4 hover:shadow-sm transition-shadow">
-                  {/* Thumbnail */}
-                  <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
-                    {order.image_url
-                      ? <img src={order.image_url} alt={order.product_title} className="w-full h-full object-cover" />
-                      : <div className="w-full h-full flex items-center justify-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
-                        </div>
-                    }
-                  </div>
+                <div key={order.id} className="bg-white rounded-xl border border-gray-200 px-4 sm:px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 hover:shadow-sm transition-shadow">
+                  <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                    {/* Thumbnail */}
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 shrink-0">
+                      {order.image_url
+                        ? <img src={order.image_url} alt={order.product_title} className="w-full h-full object-cover" />
+                        : <div className="w-full h-full flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>
+                          </div>
+                      }
+                    </div>
 
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <Link to={`/products/${order.product_id}`} className="font-semibold text-gray-800 hover:text-blue-600 transition-colors truncate block">
-                      {order.product_title}
-                    </Link>
-                    <div className="flex items-center gap-2 mt-1 flex-wrap">
-                      {order.category && (
-                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full capitalize ${CATEGORY_COLORS[order.category] || 'bg-gray-100 text-gray-500'}`}>
-                          {order.category.replace('_', ' ')}
+                    {/* Info */}
+                    <div className="flex-1 min-w-0">
+                      <Link to={`/products/${order.product_id}`} className="font-semibold text-gray-800 hover:text-blue-600 transition-colors truncate block text-sm">
+                        {order.product_title}
+                      </Link>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
+                        {order.category && (
+                          <span className={`text-xs font-medium px-2 py-0.5 rounded-full capitalize ${CATEGORY_COLORS[order.category] || 'bg-gray-100 text-gray-500'}`}>
+                            {order.category.replace('_', ' ')}
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-400">
+                          {new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                         </span>
-                      )}
-                      <span className="text-xs text-gray-400">
-                        {new Date(order.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-                      </span>
+                      </div>
                     </div>
                   </div>
 
-                  {/* License key */}
+                  {/* License key — mobile inline, desktop aside */}
                   {licenses[order.product_id] && (
-                    <div className="hidden md:flex flex-col items-end gap-1 shrink-0">
-                      <span className="text-xs text-gray-400">License</span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded px-2 py-0.5 max-w-[160px] truncate">
-                          {licenses[order.product_id]}
-                        </span>
-                        <CopyButton text={licenses[order.product_id]} />
-                      </div>
+                    <div className="flex items-center gap-1.5 sm:hidden bg-gray-50 border border-gray-200 rounded px-2 py-1.5">
+                      <span className="font-mono text-xs text-gray-600 flex-1 truncate">{licenses[order.product_id]}</span>
+                      <CopyButton text={licenses[order.product_id]} />
                     </div>
                   )}
 
-                  {/* Download button */}
-                  <div className="shrink-0">
-                    <DownloadButton productId={order.product_id} />
+                  <div className="flex items-center justify-between sm:justify-end sm:gap-4">
+                    {licenses[order.product_id] && (
+                      <div className="hidden sm:flex flex-col items-end gap-1 shrink-0">
+                        <span className="text-xs text-gray-400">License</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-mono text-xs text-gray-600 bg-gray-50 border border-gray-200 rounded px-2 py-0.5 max-w-[160px] truncate">
+                            {licenses[order.product_id]}
+                          </span>
+                          <CopyButton text={licenses[order.product_id]} />
+                        </div>
+                      </div>
+                    )}
+                    {/* Download button */}
+                    <div className="shrink-0">
+                      <DownloadButton productId={order.product_id} />
+                    </div>
                   </div>
                 </div>
               ))}
@@ -281,13 +296,13 @@ export default function UserDashboard() {
           ) : (
             <div className="space-y-2">
               {supportLicenses.map(sl => (
-                <div key={sl.id} className="bg-white rounded-xl border border-gray-200 px-5 py-4">
-                  <div className="flex items-center gap-4">
+                <div key={sl.id} className="bg-white rounded-xl border border-gray-200 px-4 sm:px-5 py-4">
+                  <div className="flex items-start sm:items-center gap-3 sm:gap-4">
                     <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-gray-800">{sl.product_title}</p>
+                      <p className="font-semibold text-gray-800 text-sm">{sl.product_title}</p>
                       <p className="text-xs text-gray-400 mt-0.5">
                         {new Date(sl.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                         <span className="mx-1.5">·</span>
